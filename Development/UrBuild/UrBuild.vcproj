@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="UrsaTest"
-	ProjectGUID="{1F945E5F-4CB3-46C7-B970-1B93E3256052}"
-	RootNamespace="UrsaTest"
+	Name="UrBuild"
+	ProjectGUID="{1AC08CB3-5820-4F81-A7B0-43FFF118AB7D}"
+	RootNamespace="UrBuild"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -40,16 +40,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\Include\;..\Core\Include\"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;DEBUG"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -62,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)Binaries\UrsaTest-Debug.exe"
+				OutputFile="$(SolutionDir)Binaries\UrBuild-Debug.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -137,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)Binaries\UrsaTest.exe"
+				OutputFile="$(SolutionDir)Binaries\UrBuild.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -175,26 +174,26 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
-			<File
-				RelativePath=".\Include\Testing.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Source\CoreTests.cpp"
+				RelativePath=".\Source\UBuildScript.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source\UrsaTest.cpp"
+				RelativePath=".\Source\UrBuild.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
+			<File
+				RelativePath=".\Include\UBuildScript.h"
 				>
 			</File>
 		</Filter>

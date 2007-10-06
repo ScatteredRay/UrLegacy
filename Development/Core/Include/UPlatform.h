@@ -1,13 +1,17 @@
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
 
+#include "Core.h"
 #include "UTypes.h"
 
-void* sysMalloc( size_t Size );
-void* sysRealloc( void* P, size_t Size );
+void* sysMalloc( psize Size );
+void* sysRealloc( void* P, psize Size );
 void sysFree( void* P );
-void* appMemset( void* Dest, int C, size_t Length );
-void* appMemzero( void* Dest, size_t Length );
+void* appMemset( void* Dest, int C, psize Length );
+void* appMemzero( void* Dest, psize Length );
+void* appMemcpy( void* Dest, const void* Src, psize Length );
+psize appStrlen( const char* Str );
+char* appStrcpy( char* Dest, const char* Src);
 
 // Application specific interlocked functions
 
@@ -19,5 +23,20 @@ LONG appInterlockedIncrement( volatile LONG* Dest );
 LONG appInterlockedDecrement( volatile LONG* Dest );
 LONG appInterlockedExchangeAdd( volatile LONG* Dest, LONG Value );
 LONG appInterlockedOr( volatile LONG* Dest, LONG Value );
+
+#include <stdio.h>
+
+class DirIterator
+{
+	WIN32_FIND_DATA DirData;
+	HANDLE FileHandle;
+public:
+	DirIterator(const char* Path);
+	~DirIterator();
+	bool Next();
+	bool isDirectory();
+	bool isCurOrPrevDir();
+	char* FileName();
+};
 
 #endif //_PLATFORM_H_

@@ -26,6 +26,21 @@ void* appMemzero( void* Dest, size_t Length )
 	return memset(Dest, 0, Length);
 }
 
+void* appMemcpy( void* Dest, const void* Src, size_t Length)
+{
+	return memcpy(Dest, Src, Length);
+}
+
+psize appStrlen( const char* Str )
+{
+	return strlen(Str);
+}
+
+char* appStrcpy( char* Dest, const char* Src )
+{
+	return strcpy(Dest, Src);
+}
+
 // Application specific interlocked functions
 
 LONG appInterlockedCompareExchange( volatile LONG* Dest, LONG Exchange, LONG Comparand )
@@ -45,7 +60,7 @@ LONG appInterlockedExchange( volatile LONG* Dest, LONG Exchange )
 
 void* appInterlockedExchangePointer( volatile void** Dest, void* Exchange )
 {
-	return InterlockedExchangePointer((PLONG)Dest, (LONG)Exchange);
+	return (void*)InterlockedExchange((LONG*)Dest, (LONG)Exchange);
 }
 
 LONG appInterlockedIncrement( volatile LONG* Dest )
@@ -78,4 +93,61 @@ LONG appInterlockedOr( volatile LONG* Dest, LONG Value )
 	return OldValue;
 
 	//return InterlockedOr(Dest, Value);
+}
+
+
+DirIterator::DirIterator(const char* Path)
+{
+	const int BufferLen = 4096;
+	int i;
+	char Buffer[BufferLen];
+	//for(i=0; Path[i] != '\0'; i++){}
+	//if(Path[i-1] != '\\')
+	//{
+	//	char* tmpPath = new char[i+2];
+	//	appMemcpy(tmpPath, Path, i);
+	//	tmpPath[i] = '\\';
+	//	tmpPath[i+1] = '\0';
+	//}
+	GetFullPathName(Path, BufferLen, Buffer, NULL);
+	FileHandle = FindFirstFile(Buffer, &DirData);
+	assert(FileHandle != INVALID_HANDLE_VALUE);
+	//printf("Error: %i\n", GetLastError());
+}
+
+DirIterator::~DirIterator()
+{
+	FindClose(FileHandle);
+}
+
+bool DirIterator::Next()
+{
+	if(!FindNextFile(FileHandle, &DirData))
+	{
+		if(GetLastError() == ERROR_NO_MORE_FILES)
+			return false;
+		else
+			assert(false);
+	}
+
+	return true;
+}
+
+bool DirIterator::isDirectory()
+{
+	return (DirData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+}
+
+bool DirIterator::isCurOrPrevDir()
+{
+	if(FileName()[0] == '.' && (
+		FileName()[1] == '\0' || (
+		FileName()[1] == '.' && FileName()[2] == '\0')))
+		return true;
+	return false;
+}
+
+char* DirIterator::FileName()
+{
+	return DirData.cFileName;
 }

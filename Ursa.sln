@@ -13,6 +13,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UrsaTest", "Development\Tes
 		{B6F3B108-27E6-470C-B5E4-9177FC3FD654} = {B6F3B108-27E6-470C-B5E4-9177FC3FD654}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UrBuild", "Development\UrBuild\UrBuild.vcproj", "{1AC08CB3-5820-4F81-A7B0-43FFF118AB7D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B6F3B108-27E6-470C-B5E4-9177FC3FD654} = {B6F3B108-27E6-470C-B5E4-9177FC3FD654}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,16 +26,18 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B6F3B108-27E6-470C-B5E4-9177FC3FD654}.Debug|Win32.ActiveCfg = Debug|Win32
 		{B6F3B108-27E6-470C-B5E4-9177FC3FD654}.Debug|Win32.Build.0 = Debug|Win32
-		{B6F3B108-27E6-470C-B5E4-9177FC3FD654}.Release|Win32.ActiveCfg = Release|Win32
-		{B6F3B108-27E6-470C-B5E4-9177FC3FD654}.Release|Win32.Build.0 = Release|Win32
+		{B6F3B108-27E6-470C-B5E4-9177FC3FD654}.Release|Win32.ActiveCfg = Debug|Win32
+		{B6F3B108-27E6-470C-B5E4-9177FC3FD654}.Release|Win32.Build.0 = Debug|Win32
 		{68EF08F7-DBEF-4A00-A0FE-15565467CB27}.Debug|Win32.ActiveCfg = Debug|Win32
-		{68EF08F7-DBEF-4A00-A0FE-15565467CB27}.Debug|Win32.Build.0 = Debug|Win32
-		{68EF08F7-DBEF-4A00-A0FE-15565467CB27}.Release|Win32.ActiveCfg = Release|Win32
-		{68EF08F7-DBEF-4A00-A0FE-15565467CB27}.Release|Win32.Build.0 = Release|Win32
+		{68EF08F7-DBEF-4A00-A0FE-15565467CB27}.Release|Win32.ActiveCfg = Debug|Win32
 		{1F945E5F-4CB3-46C7-B970-1B93E3256052}.Debug|Win32.ActiveCfg = Debug|Win32
 		{1F945E5F-4CB3-46C7-B970-1B93E3256052}.Debug|Win32.Build.0 = Debug|Win32
-		{1F945E5F-4CB3-46C7-B970-1B93E3256052}.Release|Win32.ActiveCfg = Release|Win32
-		{1F945E5F-4CB3-46C7-B970-1B93E3256052}.Release|Win32.Build.0 = Release|Win32
+		{1F945E5F-4CB3-46C7-B970-1B93E3256052}.Release|Win32.ActiveCfg = Debug|Win32
+		{1F945E5F-4CB3-46C7-B970-1B93E3256052}.Release|Win32.Build.0 = Debug|Win32
+		{1AC08CB3-5820-4F81-A7B0-43FFF118AB7D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1AC08CB3-5820-4F81-A7B0-43FFF118AB7D}.Debug|Win32.Build.0 = Debug|Win32
+		{1AC08CB3-5820-4F81-A7B0-43FFF118AB7D}.Release|Win32.ActiveCfg = Debug|Win32
+		{1AC08CB3-5820-4F81-A7B0-43FFF118AB7D}.Release|Win32.Build.0 = Debug|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -20,7 +20,7 @@
 			OutputDirectory="$(SolutionDir)Lib\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)Intermediate\$(ConfigurationName)"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -81,7 +81,7 @@
 			OutputDirectory="$(SolutionDir)Lib\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)Intermediate\$(ConfigurationName)"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool

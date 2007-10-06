@@ -42,6 +42,11 @@ inline void* appMalloc( psize Size )
 	return KMemoryManager::MemoryManager()->Malloc(Size);
 }
 
+inline void* appStackAlloc( psize Size )
+{
+	return alloca(Size);
+}
+
 inline void* appFastMalloc( psize Size )
 {
 	return  KMemoryManager::MemoryManager()->FastMalloc(Size);

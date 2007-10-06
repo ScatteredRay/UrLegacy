@@ -20,7 +20,7 @@
 			OutputDirectory="$(SolutionDir)Lib\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)Intermediate\$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -100,7 +100,7 @@
 			OutputDirectory="$(SolutionDir)Lib\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)Intermediate\$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool
