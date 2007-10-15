@@ -41,6 +41,11 @@ char* appStrcpy( char* Dest, const char* Src )
 	return strcpy(Dest, Src);
 }
 
+int appStricmp( const char* str1, const char* str2 )
+{
+	return stricmp(str1, str2);
+}
+
 // Application specific interlocked functions
 
 LONG appInterlockedCompareExchange( volatile LONG* Dest, LONG Exchange, LONG Comparand )
@@ -60,7 +65,10 @@ LONG appInterlockedExchange( volatile LONG* Dest, LONG Exchange )
 
 void* appInterlockedExchangePointer( volatile void** Dest, void* Exchange )
 {
-	return (void*)InterlockedExchange((LONG*)Dest, (LONG)Exchange);
+#pragma warning( push )
+#pragma warning( disable : 4311 4312 ) // Not much I could do, tis how it's defined in the headers, should be 64 bit compatible though.
+	return InterlockedExchangePointer(Dest, Exchange);
+#pragma warning( pop )
 }
 
 LONG appInterlockedIncrement( volatile LONG* Dest )
@@ -99,7 +107,7 @@ LONG appInterlockedOr( volatile LONG* Dest, LONG Value )
 DirIterator::DirIterator(const char* Path)
 {
 	const int BufferLen = 4096;
-	int i;
+	//int i;
 	char Buffer[BufferLen];
 	//for(i=0; Path[i] != '\0'; i++){}
 	//if(Path[i-1] != '\\')
@@ -150,4 +158,51 @@ bool DirIterator::isCurOrPrevDir()
 char* DirIterator::FileName()
 {
 	return DirData.cFileName;
+}
+
+File* File::OpenFile(const char* Path)
+{
+	File* F = new File();
+	F->_file = fopen(Path, "r"); // just doing reading of text for now.
+	if(F->_file == NULL)
+	{
+		delete F;
+		return NULL;
+	}
+	else
+		return F;
+}
+
+File::File()
+{
+}
+
+File::~File()
+{
+	fclose(_file);
+}
+
+size_t File::FileLength()
+{
+	// No real length query, so we need to seek to the end, and get pos.
+	long FileLen;
+	long StartPos = ftell(_file);
+	fseek(_file, 0, SEEK_END);
+	FileLen = ftell(_file);
+	fseek(_file, StartPos, SEEK_SET);
+	return FileLen;
+}
+
+char* File::ReadAll()
+{
+	size_t FileLen = FileLength();
+	char* ReadBuffer = new char[FileLen];
+	fread(ReadBuffer, sizeof(char), FileLen, _file);
+	return ReadBuffer;
+}
+
+char* File::Read()
+{
+	assert(false);
+	return NULL;
 }

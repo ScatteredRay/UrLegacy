@@ -3,6 +3,7 @@
 
 #include "Core.h"
 #include "UTypes.h"
+#include <stdio.h>
 
 void* sysMalloc( psize Size );
 void* sysRealloc( void* P, psize Size );
@@ -12,6 +13,7 @@ void* appMemzero( void* Dest, psize Length );
 void* appMemcpy( void* Dest, const void* Src, psize Length );
 psize appStrlen( const char* Str );
 char* appStrcpy( char* Dest, const char* Src);
+int appStricmp( const char* str1, const char* str2 );
 
 // Application specific interlocked functions
 
@@ -37,6 +39,18 @@ public:
 	bool isDirectory();
 	bool isCurOrPrevDir();
 	char* FileName();
+};
+
+class File
+{
+	FILE* _file;
+	File();
+public:
+	static File* OpenFile(const char* Path);
+	~File();
+	size_t FileLength();
+	char* ReadAll();
+	char* Read();
 };
 
 #endif //_PLATFORM_H_
