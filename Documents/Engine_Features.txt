@@ -1,0 +1,50 @@
+Engine feature dependency graph
+
+- Game
+	- Multiplayer
+		- Networking
+			- Dedicated server
+			- Remote objects
+				- Unreliable networking
+			- Remote procedures
+				- Reliable networking			
+	- Gametypes
+	- Ship dynamcs
+		- Physics
+			- Collision
+				- Collision Import/generation
+	- Weaponry
+		- Collision
+		- Particles
+		- Import attach points.
+	- Display
+		- Mesh rendering
+			- Mesh import
+		- World rendering
+			- World editor/import
+			- World partitioning
+		- Materials
+		- Per-pixel multi-pass lighting
+		- Particles
+		- Decals
+		- Camera system
+	- Audio
+		- Sound import
+		- Sound positioning
+		- Sound culling.
+	- HUD
+	- Dev Console
+		- UI text
+	- Input
+		- Joystick
+		- Mouse
+		- Keyboard
+	- Import
+		- Build script reader
+		- Mesh importers
+			- Obj?
+			- Collada?
+		- Texture importers
+			- PNG?
+		- Sound importers
+			- Wav?
