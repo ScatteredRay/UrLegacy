@@ -85,12 +85,19 @@ void* KMemoryManager::FastMalloc( psize Size )
 
 void KMemoryManager::Free( void* P )
 {
+	if(P == NULL)
+		return;
 	KMemBlockHead* MemHeader = (KMemBlockHead*)((char*)P-sizeof(KMemBlockHead));
 
 	ASSERT(MemHeader->Signature == MemBlock_Signature); // Trying to free bad memory
-	ASSERT(!MemHeader->MemFlags.Get() | KMemBlockHead::MemBlock_Destroy); // Trying to free freed memory
+	ASSERT(!MemHeader->MemFlags.Get() | KMemBlockHead::MemBlock_Destroy); // Trying to free free'd memory
 
 	MemHeader->MemFlags.Or(KMemBlockHead::MemBlock_Destroy);
+}
+
+void* KMemoryManager::Realloc( void* P, psize Size )
+{
+	assert(false && "Realloc not implemented");
 }
 
 bool KMemoryManager::VerifyConsistancy()

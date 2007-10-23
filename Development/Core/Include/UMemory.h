@@ -32,6 +32,7 @@ public:
 	void* Malloc(psize Size);
 	// More standard malloc, doesn't zero the memory.
 	void* FastMalloc(psize Size);
+	void* Realloc( void* P, psize Size );
 	void Free(void* P);
 	bool VerifyConsistancy(); 
 	void Collect();
@@ -44,7 +45,9 @@ inline void* appMalloc( psize Size )
 
 inline void* appStackAlloc( psize Size )
 {
-	return alloca(Size);
+	void* buffer = alloca(Size);
+	appMemzero(buffer, Size);
+	return buffer;
 }
 
 inline void* appFastMalloc( psize Size )
@@ -55,6 +58,11 @@ inline void* appFastMalloc( psize Size )
 inline void appFree( void* P )
 {
 	KMemoryManager::MemoryManager()->Free(P);
+}
+
+inline void* appRealloc( void* P, psize Size )
+{
+	return KMemoryManager::MemoryManager()->Realloc(P, Size);
 }
 
 inline void* operator new( psize Size )

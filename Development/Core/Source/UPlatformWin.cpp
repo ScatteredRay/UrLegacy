@@ -41,9 +41,26 @@ char* appStrcpy( char* Dest, const char* Src )
 	return strcpy(Dest, Src);
 }
 
+char* appStrncpy( char* Dest, const char* Src, size_t Len)
+{
+	return strncpy(Dest, Src, Len);
+}
+
 int appStricmp( const char* str1, const char* str2 )
 {
 	return stricmp(str1, str2);
+}
+
+char* appStrupr( char* str )
+{
+	char* chr = str;
+	while(chr[0] != '\0')
+	{
+		if(chr[0] >= 'a' && chr[0] <= 'z')
+			chr[0] += ('A' - 'a');
+		chr++;
+	}
+	return str;
 }
 
 // Application specific interlocked functions

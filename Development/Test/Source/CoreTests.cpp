@@ -204,15 +204,3 @@ public:
 };
 
 REGISTER_TEST(TemplateTest)
-
-//////////////////////////////////////////////////
-// Object Tests
-//////////////////////////////////////////////////
-
-class ObjTest : public Object
-{
-DECLARE_CLASS(ObjTest, Object)
-BEGIN_REFERENCES(ObjTest)
-END_REFERENCES
-
-};

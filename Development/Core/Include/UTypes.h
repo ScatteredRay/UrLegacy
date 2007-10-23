@@ -58,6 +58,28 @@ template<> class KTypeInfo<bool> : public KTypeInfoPrimitiveBase<bool> {};
 #include <assert.h> //TODO: Same here!
 
 template<typename T = void>
+class ZeroedAllocator
+{
+public:
+	enum{NeedsMemoryManagement = true};
+	static T* Alloc(psize size)
+	{
+		void* Buffer = sysMalloc(size);
+		appMemzero(Buffer, size);
+		return (T*)Buffer;
+	}
+	static T* Realloc(T* P, psize size)
+	{
+		assert(false); //TODO: implement a zero'd version
+		return (T*)sysRealloc(P, size);
+	}
+	static void Free(T* P)
+	{
+		sysFree(P);
+	}
+};
+
+template<typename T = void>
 class NonManagedAllocator
 {
 public:

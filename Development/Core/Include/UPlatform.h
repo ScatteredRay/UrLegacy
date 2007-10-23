@@ -13,7 +13,9 @@ void* appMemzero( void* Dest, psize Length );
 void* appMemcpy( void* Dest, const void* Src, psize Length );
 psize appStrlen( const char* Str );
 char* appStrcpy( char* Dest, const char* Src);
+char* appStrncpy( char* Dest, const char* Src, size_t Len);
 int appStricmp( const char* str1, const char* str2 );
+char* appStrupr( char* str );
 
 // Application specific interlocked functions
 
