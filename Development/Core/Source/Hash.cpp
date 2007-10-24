@@ -37,17 +37,28 @@ on 1 byte), but shoehorning those bytes into integers efficiently is messy.
 
 #include <stdio.h>      /* defines printf for tests */
 #include <time.h>       /* defines time_t for timings in the test */
-#include <stdint.h>     /* defines uint32_t etc */
-#include <sys/param.h>  /* attempt to define endianness */
+//#include <stdint.h>     /* defines uint32_t etc */
+//#include <sys/param.h>  /* attempt to define endianness */
 #ifdef linux
 # include <endian.h>    /* attempt to define endianness */
 #endif
+
+typedef signed char int8_t;
+typedef unsigned char uint8_t;
+typedef signed short int int16_t;
+typedef unsigned short int uint16_t;
+typedef unsigned int uint32_t;
+typedef signed __int64 int64_t;
+typedef unsigned __int64 uint64_t;
+
+#pragma warning(push)
+#pragma warning(disable : 4101) // not sure if k8 has any validity being there, leaving it in - Indy
 
 /*
  * My best guess at if you are big-endian or little-endian.  This may
  * need adjustment.
  */
-#if (defined(__BYTE_ORDER) && defined(__LITTLE_ENDIAN) && \
+/*#if (defined(__BYTE_ORDER) && defined(__LITTLE_ENDIAN) && \
      __BYTE_ORDER == __LITTLE_ENDIAN) || \
     (defined(i386) || defined(__i386__) || defined(__i486__) || \
      defined(__i586__) || defined(__i686__) || defined(vax) || defined(MIPSEL))
@@ -61,7 +72,9 @@ on 1 byte), but shoehorning those bytes into integers efficiently is messy.
 #else
 # define HASH_LITTLE_ENDIAN 0
 # define HASH_BIG_ENDIAN 0
-#endif
+#endif*/
+# define HASH_LITTLE_ENDIAN 1 // I know what it is - Indy
+# define HASH_BIG_ENDIAN 0
 
 #define hashsize(n) ((uint32_t)1<<(n))
 #define hashmask(n) (hashsize(n)-1)
@@ -967,3 +980,5 @@ void driver3()
 }
 
 #endif  /* SELF_TEST */
+
+ #pragma warning(pop)

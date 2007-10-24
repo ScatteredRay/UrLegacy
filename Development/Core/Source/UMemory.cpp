@@ -98,6 +98,7 @@ void KMemoryManager::Free( void* P )
 void* KMemoryManager::Realloc( void* P, psize Size )
 {
 	assert(false && "Realloc not implemented");
+	return NULL;
 }
 
 bool KMemoryManager::VerifyConsistancy()

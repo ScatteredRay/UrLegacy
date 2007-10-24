@@ -153,6 +153,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Source\Hash.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Source\UMemory.cpp"
 				>
 			</File>

@@ -6,12 +6,31 @@
 
 
 //Nice set of hash function, stolen from Bob Jenkins at http://burtleburtle.net/bob/c/lookup3.c
+typedef unsigned int uint32_t;
 uint32_t hashlittle( const void *key, size_t length, uint32_t initval);
 void hashlittle2( const void *key, size_t length, uint32_t *pc, uint32_t *pb);
 
 const unsigned int HashSeed = 0xF48D32AB;
 const unsigned int MaxStrings = 256;
 const unsigned int HashMask = 0xFF; // first byte, should be 256 nums
+
+class NameTable
+{
+	friend class Name;
+	KArray<char*> Names;
+public:
+	NameTable()
+	{
+		Names.Add(MaxStrings);
+		assert(Names.Num() == MaxStrings);
+		for(uint i=0; i<Names.Num(); i++)
+		{
+			Names[i] = NULL;
+		}
+	}
+};
+
+extern NameTable* GNames;
 
 class Name
 {
@@ -35,29 +54,29 @@ public:
 
 		while(true)
 		{
-			if(searchIdx == MaxStrings)
-				searchIdx = 0;
+			if(SearchIdx == MaxStrings)
+				SearchIdx = 0;
 
-			if(Games->Names[searchIdx] == NULL)
+			if(GNames->Names[SearchIdx] == NULL)
 			{
-				Index = searchIdx;
-				GNames->Names[searchIdx] = StrUpr;
+				Index = SearchIdx;
+				GNames->Names[SearchIdx] = StrUpr;
 				return;
 			}
-			else if(appStricmp(StrUpr, GNames->Names[searchIdx])
+			else if(appStricmp(StrUpr, GNames->Names[SearchIdx]))
 			{
-				Index = searchIdx;
+				Index = SearchIdx;
 				delete StrUpr;
 				return;
 			}
 
-			if((searchIdx == StartIdx-1) || (searchId == 255 && StartIdx == 0)
+			if((SearchIdx == StartIdx-1) || (SearchIdx == 255 && StartIdx == 0))
 			{
 				// Done a full loop and doesn't exist, and is full, Error!
-				assert(false)
+				assert(false);
 				break;
 			}
-			searchIdx++;
+			SearchIdx++;
 		}
 	}
 	bool operator==(const Name other)
@@ -65,28 +84,10 @@ public:
 		return Index == other.Index;
 	}
 private:
-	unsigned int HashIndex(char* String, size_t Length);
+	unsigned int HashIndex(char* String, size_t Length)
 	{
 		return hashlittle( (void*)String, Length, HashSeed ) & HashMask;
 	}
 };
-
-class NameTable
-{
-	friend class Name;
-	KArray<char*> Names;
-public:
-	NameTable()
-	{
-		Names.Add(MaxStrings);
-		assert(Names.Num() == MaxStrings);
-		for(uint i=0; i<Names.Num(); i++)
-		{
-			Names[i] = NULL;
-		}
-	}
-};
-
-extern NameTable* GNames;
 
 #endif //_NAMES_H_

@@ -134,12 +134,12 @@ struct BuildVar
 			delete StringVal;
 		delete Next;
 	}
-}
+};
 
 BuildVar* ParseBuildVar(char** ScriptChar)
 {
 	BuildVar* CurrentVar = new BuildVar();
-
+	return CurrentVar;
 }
 
 BuildVar* ParseBuildVars(char** ScriptChar)
