@@ -188,6 +188,10 @@
 				RelativePath=".\Source\UrBuild.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Source\UrImporters.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -196,6 +200,10 @@
 			>
 			<File
 				RelativePath=".\Include\UBuildScript.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\UrImporters.h"
 				>
 			</File>
 		</Filter>

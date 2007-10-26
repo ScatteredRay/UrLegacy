@@ -2,6 +2,8 @@
 #include "Core.h"
 #include "UPlatform.h"
 #include "UMemory.h"
+#include "Names.h"
+#include "UrImporters.h"
 #include <stdio.h>
 
 const char* ContentDirectory = "..\\Content\\*";
@@ -95,6 +97,7 @@ inline const char* BuildTokenString(BuildToken Tok)
 struct Token
 {
 	BuildToken Tok;
+	Name IdName; //TODO: Didn't want to be in union, copy constructor?
 	union
 	{
 		char* String;
@@ -104,35 +107,8 @@ struct Token
 	Token() : Tok(TOK_Invalid), String(NULL) {}
 	~Token()
 	{
-		if(Tok == TOK_ID || Tok == TOK_String)
+		if(Tok == TOK_String)
 			delete String;
-	}
-};
-
-struct BuildVar
-{
-	char* VarName;
-	enum 
-	{
-		Var_None,
-		Var_String,
-		Var_Int,
-		Var_Float
-	} ValueType;
-	union
-	{
-		char* StringVal;
-		int IntVal;
-		float FloatVal;
-	};
-	BuildVar* Next;
-	BuildVar() : VarName(NULL), Next(NULL), ValueType(Var_None) {}
-	~BuildVar()
-	{
-		delete VarName;
-		if(ValueType == Var_String)
-			delete StringVal;
-		delete Next;
 	}
 };
 
@@ -166,6 +142,10 @@ BuildVar* ParseBuildVars(char** ScriptChar)
 		case TOK_RParen:
 			bContinue = false;
 			break;
+		case TOK_EOF:
+			BuildError("Unexpected EOF in Var def.\n");
+			bContinue = false;
+			break;
 		}
 		delete CurrentToken;
 	}
@@ -178,7 +158,13 @@ bool ParseBuildAsset(char** ScriptChar)
 	switch(CurrentToken->Tok)
 	{
 	case TOK_ID:
-		ParseBuildVars(ScriptChar);
+		{
+			Token* NextToken = GetBuildToken(ScriptChar);
+			if(NextToken->Tok != TOK_LParen)
+				BuildError("Expected '(' after Build Decleration\n");
+			BuildVar* Vars = ParseBuildVars(ScriptChar);
+			RunImporter(CurrentToken->IdName, Vars);
+		}
 		break; 
 	case TOK_EOF:
 		delete CurrentToken;
@@ -275,7 +261,8 @@ Token* GetBuildToken(char** CurrentChar)
 		{
 			char* str = new char[TokenLen+1];
 			appStrncpy(str, Char, TokenLen);
-			CurrentToken->String = str;
+			CurrentToken->IdName = Name(str);
+			delete str;
 		}
 		break;
 	case '"':
