@@ -6,5 +6,6 @@
 
 DECLARE_NAME(Texture);
 DECLARE_NAME(Model);
+DECLARE_NAME(Path);
 
 #endif //_NAME_H_

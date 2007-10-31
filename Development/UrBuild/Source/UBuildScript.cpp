@@ -112,9 +112,35 @@ struct Token
 	}
 };
 
-BuildVar* ParseBuildVar(char** ScriptChar)
+BuildVar* ParseBuildVar(char** ScriptChar, Name VarName)
 {
 	BuildVar* CurrentVar = new BuildVar();
+	CurrentVar->VarName = VarName;
+	Token* CurrentToken = GetBuildToken(ScriptChar);
+	if(CurrentToken->Tok != TOK_Equal)
+		BuildError("Expected '=' in variable decleration");
+	delete CurrentToken;
+	CurrentToken = GetBuildToken(ScriptChar);
+	switch(CurrentToken->Tok)
+	{
+	case TOK_String:
+		CurrentVar->ValueType = BuildVar::Var_String;
+		CurrentVar->StringVal = CurrentToken->String;
+		CurrentToken->String = NULL; // So that it doesn't get deleted.
+		break;
+	case TOK_Int:
+		CurrentVar->ValueType = BuildVar::Var_Int;
+		CurrentVar->IntVal = CurrentToken->Int;
+		break;
+	case TOK_Float:
+		CurrentVar->ValueType = BuildVar::Var_Float;
+		CurrentVar->FloatVal = CurrentToken->Float;
+		break;
+	default:
+		BuildError("Unexpected Token in variable decleration");
+		break;
+	}
+	delete CurrentToken;
 	return CurrentVar;
 }
 
@@ -135,7 +161,7 @@ BuildVar* ParseBuildVars(char** ScriptChar)
 				Next = &((*Next)->Next);
 			break;
 		case TOK_ID:
-			(*Next) = ParseBuildVar(ScriptChar);
+			(*Next) = ParseBuildVar(ScriptChar, CurrentToken->IdName);
 			if((*Next) != NULL)
 				Next = &((*Next)->Next);
 			break;
@@ -144,6 +170,10 @@ BuildVar* ParseBuildVars(char** ScriptChar)
 			break;
 		case TOK_EOF:
 			BuildError("Unexpected EOF in Var def.\n");
+			bContinue = false;
+			break;
+		default:
+			BuildError("Unexpected Token.\n");
 			bContinue = false;
 			break;
 		}

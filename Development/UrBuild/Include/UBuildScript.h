@@ -1,13 +1,14 @@
 #ifndef _UBUILDSCRIPT_H_
 #define _UBUILDSCRIPT_H_
 #include "Core.h"
+#include "Name.h"
 
 void RunBuildScripts();
 void RunBuildScript(const char* Filename);
 
 struct BuildVar
 {
-	char* VarName;
+	Name VarName;
 	enum 
 	{
 		Var_None,
@@ -22,10 +23,10 @@ struct BuildVar
 		float FloatVal;
 	};
 	BuildVar* Next;
-	BuildVar() : VarName(NULL), Next(NULL), ValueType(Var_None) {}
+	BuildVar() : VarName(), Next(NULL), ValueType(Var_None) {}
 	~BuildVar()
 	{
-		delete VarName;
+		//delete VarName;
 		if(ValueType == Var_String)
 			delete StringVal;
 		delete Next;
