@@ -161,6 +161,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Source\UParse.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Source\UPlatformWin.cpp"
 				>
 			</File>
@@ -200,6 +204,10 @@
 			</File>
 			<File
 				RelativePath=".\Include\UObject.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\UParse.h"
 				>
 			</File>
 			<File

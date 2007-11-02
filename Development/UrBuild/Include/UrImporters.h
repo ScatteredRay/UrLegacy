@@ -3,6 +3,6 @@
 #include "UBuildScript.h"
 #include "Names.h"
 
-void RunImporter(Name ImportName, BuildVar* BuildVars);
+void RunImporter(Name ImportName, BuildVar* BuildVars, BuildState* BState);
 
 #endif //_URIMPORTERS_H_

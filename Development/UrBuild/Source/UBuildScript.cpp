@@ -3,34 +3,12 @@
 #include "UPlatform.h"
 #include "UMemory.h"
 #include "Names.h"
+#include "UParse.h"
 #include "UrImporters.h"
 #include <stdio.h>
 
 const char* ContentDirectory = "..\\Content\\*";
 const char* BuildScriptExt = ".ubs";
-
-//#define BuildError(...) {printf(__VA_ARGS__); throw "Compile Error";}
-#define BuildError printf
-
-char* GetSubDirPath(const char* Dir, const char* SubDir, const char* Ext)
-{
-			psize CDirLen = appStrlen(Dir);
-			psize FileNameLen = appStrlen(SubDir);
-			psize ExtLen = appStrlen(Ext);
-			psize DirBufLen = CDirLen + FileNameLen + ExtLen; // - ('*') + ('\\', '*', '\0')
-			char* NewDir = (char*)appMalloc(DirBufLen * sizeof(char));
-			appStrcpy(NewDir, Dir);
-			appStrcpy(NewDir+CDirLen-1, SubDir);
-			appStrcpy(NewDir+CDirLen+FileNameLen-1, Ext);
-			return NewDir;
-}
-
-bool HasExtension(const char* Dir, const char* Ext)
-{
-	size_t DirLen = appStrlen(Dir);
-	size_t ExtLen = appStrlen(Ext);
-	return (appStricmp(Dir+DirLen-ExtLen, Ext) == 0);
-}
 
 void RunBuildScriptsFor(const char* CurrDir)
 {
@@ -47,8 +25,10 @@ void RunBuildScriptsFor(const char* CurrDir)
 		}
 		else if(HasExtension(ContentDir.FileName(), BuildScriptExt))
 		{
-			char* ScriptPath = GetSubDirPath(CurrDir, ContentDir.FileName(), "");
-			RunBuildScript(ScriptPath);
+			char* ScriptPath = GetSubDirPath(CurrDir, ContentDir.FileName());
+			BuildState* CurrentState = new BuildState(CurrDir);
+			RunBuildScript(ScriptPath, CurrentState);
+			delete CurrentState;
 			delete ScriptPath;
 		}
 	}
@@ -182,7 +162,7 @@ BuildVar* ParseBuildVars(char** ScriptChar)
 	return Vars;
 }
 
-bool ParseBuildAsset(char** ScriptChar)
+bool ParseBuildAsset(char** ScriptChar, BuildState* BState)
 {
 	Token* CurrentToken = GetBuildToken(ScriptChar);
 	switch(CurrentToken->Tok)
@@ -193,7 +173,7 @@ bool ParseBuildAsset(char** ScriptChar)
 			if(NextToken->Tok != TOK_LParen)
 				BuildError("Expected '(' after Build Decleration\n");
 			BuildVar* Vars = ParseBuildVars(ScriptChar);
-			RunImporter(CurrentToken->IdName, Vars);
+			RunImporter(CurrentToken->IdName, Vars, BState);
 		}
 		break; 
 	case TOK_EOF:
@@ -207,61 +187,24 @@ bool ParseBuildAsset(char** ScriptChar)
 	return true;
 }
 
-void RunBuildScript(const char* Filename)
+void RunBuildScript(const char* Filename, BuildState* BState)
 {
 	File* ScriptFile = File::OpenFile(Filename);
 	char* ScriptBuffer = ScriptFile->ReadAll();
 	char* ScriptChar = ScriptBuffer;
 	delete ScriptFile;
 
-	while(ParseBuildAsset(&ScriptChar)){}
+	while(ParseBuildAsset(&ScriptChar, BState)){}
 
-}
-
-#define caseAlpha \
-case 'a': case 'b': case 'c': case 'd': \
-case 'e': case 'f': case 'g': case 'h': \
-case 'i': case 'j': case 'k': case 'l': \
-case 'm': case 'n': case 'o': case 'p': \
-case 'q': case 'r': case 's': case 't': \
-case 'u': case 'v': case 'w': case 'x': \
-case 'y': case 'z': case 'A': case 'B': \
-case 'C': case 'D': case 'E': case 'F': \
-case 'G': case 'H': case 'I': case 'J': \
-case 'K': case 'L': case 'M': case 'N': \
-case 'O': case 'P': case 'Q': case 'R': \
-case 'S': case 'T': case 'U': case 'V': \
-case 'W': case 'X': case 'Y': case 'Z'
-
-#define caseNumeric \
-case '0': case '1': case '2': case '3': \
-case '4': case '5': case '6': case '7': \
-case '8': case '9'
-
-bool IsNumeric(char c)
-{
-	return (c >= '0' && c <= '9');
-}
-
-bool IsAlphaNumeric(char c)
-{
-	return ((c >= 'a' && c <= 'z') ||
-		(c >= 'A' && c <= 'Z') ||
-		IsNumeric(c));
 }
 
 Token* GetBuildToken(char** CurrentChar)
 {
+	EatWhiteSpace(CurrentChar);
 	char* Char = *CurrentChar;
 	int TokenLen = 0;
 	Token* CurrentToken = new Token();
-	while(	Char[0] == ' ' ||
-			Char[0] == '\t' ||
-			Char[0] == '\n')
-	{
-		Char++;
-		(*CurrentChar)++;
-	}
+
 
 	switch(Char[0])
 	{

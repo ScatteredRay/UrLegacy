@@ -1,5 +1,6 @@
 #include "UPlatform.h"
 #include "Core.h"
+#include "UMemory.h"
 
 void* sysMalloc( size_t Size )
 {
@@ -218,8 +219,44 @@ char* File::ReadAll()
 	return ReadBuffer;
 }
 
+char* File::ReadLine()
+{
+	char* ReadBuffer = new char[MaxLineLen];
+	char* out = fgets(ReadBuffer, MaxLineLen, _file);
+	if(out == ReadBuffer)
+		return ReadBuffer;
+	else
+		delete ReadBuffer;
+	return NULL;
+}
+
 char* File::Read()
 {
 	assert(false);
 	return NULL;
+}
+
+char* GetSubDirPath(const char* Dir, const char* SubDir, const char* Ext)
+{
+			psize CDirLen = appStrlen(Dir);
+			psize FileNameLen = appStrlen(SubDir);
+			psize ExtLen = appStrlen(Ext);
+			psize DirBufLen = CDirLen + FileNameLen + ExtLen; // - ('*') + ('\\', '*', '\0')
+			char* NewDir = (char*)appMalloc(DirBufLen * sizeof(char));
+			appStrcpy(NewDir, Dir);
+			appStrcpy(NewDir+CDirLen-1, SubDir);
+			appStrcpy(NewDir+CDirLen+FileNameLen-1, Ext);
+			return NewDir;
+}
+
+char* GetSubDirPath(const char* Dir, const char* SubDir)
+{
+	return GetSubDirPath(Dir, SubDir, "");
+}
+
+bool HasExtension(const char* Dir, const char* Ext)
+{
+	size_t DirLen = appStrlen(Dir);
+	size_t ExtLen = appStrlen(Ext);
+	return (appStricmp(Dir+DirLen-ExtLen, Ext) == 0);
 }

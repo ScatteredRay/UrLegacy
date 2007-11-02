@@ -4,7 +4,7 @@
 #include "Name.h"
 
 void RunBuildScripts();
-void RunBuildScript(const char* Filename);
+void RunBuildScript(const char* Filename, struct BuildState* BState);
 
 struct BuildVar
 {
@@ -32,5 +32,14 @@ struct BuildVar
 		delete Next;
 	}
 };
+
+struct BuildState
+{
+	const char* CurrentPath;
+	BuildState(const char* Path) : CurrentPath(Path){}
+};
+
+//#define BuildError(...) {printf(__VA_ARGS__); throw "Compile Error";}
+#define BuildError printf
 
 #endif //_UBUILDSCRIPT_H_

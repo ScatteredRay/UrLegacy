@@ -43,6 +43,8 @@ public:
 	char* FileName();
 };
 
+const size_t MaxLineLen = 255; // it's how fgets works, we'll see if we can remove this if it becomes a problem.
+
 class File
 {
 	FILE* _file;
@@ -53,6 +55,11 @@ public:
 	size_t FileLength();
 	char* ReadAll();
 	char* Read();
+	char* ReadLine();
 };
+
+char* GetSubDirPath(const char* Dir, const char* SubDir, const char* Ext);
+char* GetSubDirPath(const char* Dir, const char* SubDir);
+bool HasExtension(const char* Dir, const char* Ext);
 
 #endif //_PLATFORM_H_
