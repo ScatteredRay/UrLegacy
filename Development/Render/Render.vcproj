@@ -2,10 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="Core"
-	ProjectGUID="{B6F3B108-27E6-470C-B5E4-9177FC3FD654}"
-	RootNamespace="Core"
-	Keyword="Win32Proj"
+	Name="Render"
+	ProjectGUID="{96DAA032-BC9D-4015-80DC-B056247E8126}"
 	>
 	<Platforms>
 		<Platform
@@ -16,12 +14,10 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Release|Win32"
+			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)Lib\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)Intermediate\$(ConfigurationName)"
 			ConfigurationType="4"
-			CharacterSet="0"
-			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -40,14 +36,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".\Include\"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
-				RuntimeLibrary="2"
-				UsePrecompiledHeader="0"
+				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories=".\Include\;..\Core\Include\"
+				RuntimeLibrary="3"
 				ProgramDataBaseFileName="$(OutDir)\vc80.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -78,12 +72,10 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug|Win32"
+			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)Lib\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)Intermediate\$(ConfigurationName)"
 			ConfigurationType="4"
-			CharacterSet="0"
-			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -102,16 +94,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="1"
-				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories=".\Include\"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;DEBUG"
-				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
+				WholeProgramOptimization="true"
+				AdditionalIncludeDirectories=".\Include\;..\Core\Include\"
+				RuntimeLibrary="2"
 				ProgramDataBaseFileName="$(OutDir)\vc80.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -151,31 +139,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Source\Core.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Source\Hash.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Source\UMemory.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Source\UParse.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Source\UPlatformWin.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Source\UThreading.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Source\UTypes.cpp"
+				RelativePath=".\Source\RenderInterface.cpp"
 				>
 			</File>
 		</Filter>
@@ -185,43 +149,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Include\Core.h"
+				RelativePath=".\Include\glext.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Include\Name.h"
+				RelativePath=".\Include\RenderInterface.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Include\Names.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\UConcurrency.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\UMemory.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\UObject.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\UParse.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\UPlatform.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\UThreading.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\UTypes.h"
+				RelativePath=".\Include\UrsaGL.h"
 				>
 			</File>
 		</Filter>

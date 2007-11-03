@@ -1,0 +1,2 @@
+ Hash.cpp is created by Bob Jenkins, licensed under public domain.
+ glext.h is created by SGI as part of teh sample OpenGL implementation, licensed under SGI's FreeB (http://oss.sgi.com/projects/FreeB/) Need to look into, seems to contain an advertisement clause, is it really applicable for the gltext.h header?

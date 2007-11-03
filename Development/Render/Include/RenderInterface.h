@@ -1,0 +1,4 @@
+#ifndef _RENDERINTERFACE_H_
+#define _RENDERINTERFACE_H_
+
+#endif //_RENDERINTERFACE_H_
