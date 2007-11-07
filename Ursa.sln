@@ -16,11 +16,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UrsaTest", "Development\Tes
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UrBuild", "Development\UrBuild\UrBuild.vcproj", "{1AC08CB3-5820-4F81-A7B0-43FFF118AB7D}"
 	ProjectSection(ProjectDependencies) = postProject
-		{B6F3B108-27E6-470C-B5E4-9177FC3FD654} = {B6F3B108-27E6-470C-B5E4-9177FC3FD654}
 		{96DAA032-BC9D-4015-80DC-B056247E8126} = {96DAA032-BC9D-4015-80DC-B056247E8126}
+		{B6F3B108-27E6-470C-B5E4-9177FC3FD654} = {B6F3B108-27E6-470C-B5E4-9177FC3FD654}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Render", "Development\Render\Render.vcproj", "{96DAA032-BC9D-4015-80DC-B056247E8126}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UrModelViewer", "Development\UrModelViewer\UrModelViewer.vcproj", "{4AE0FCA0-A209-4FA0-90EE-E0273910D3C5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B6F3B108-27E6-470C-B5E4-9177FC3FD654} = {B6F3B108-27E6-470C-B5E4-9177FC3FD654}
+		{96DAA032-BC9D-4015-80DC-B056247E8126} = {96DAA032-BC9D-4015-80DC-B056247E8126}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +52,10 @@ Global
 		{96DAA032-BC9D-4015-80DC-B056247E8126}.Debug|Win32.Build.0 = Debug|Win32
 		{96DAA032-BC9D-4015-80DC-B056247E8126}.Release|Win32.ActiveCfg = Release|Win32
 		{96DAA032-BC9D-4015-80DC-B056247E8126}.Release|Win32.Build.0 = Release|Win32
+		{4AE0FCA0-A209-4FA0-90EE-E0273910D3C5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4AE0FCA0-A209-4FA0-90EE-E0273910D3C5}.Debug|Win32.Build.0 = Debug|Win32
+		{4AE0FCA0-A209-4FA0-90EE-E0273910D3C5}.Release|Win32.ActiveCfg = Release|Win32
+		{4AE0FCA0-A209-4FA0-90EE-E0273910D3C5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
