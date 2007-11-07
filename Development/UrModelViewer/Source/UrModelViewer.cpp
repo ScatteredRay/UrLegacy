@@ -5,6 +5,8 @@
 #include "UrModelViewer.h"
 #include "RenderInterface.h"
 #include "UrsaGL.h"
+#include "UThreading.h"
+#include "UrRender.h"
 
 #define MAX_LOADSTRING 100
 
@@ -20,31 +22,11 @@ BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-                     HINSTANCE hPrevInstance,
-                     LPTSTR    lpCmdLine,
-                     int       nCmdShow)
+void CreatePixelFormat(PIXELFORMATDESCRIPTOR& pfd)
 {
-	UNREFERENCED_PARAMETER(hPrevInstance);
-	UNREFERENCED_PARAMETER(lpCmdLine);
-
- 	// TODO: Place code here.
-	MSG msg;
-
-	// Initialize global strings
-	MyRegisterClass(hInstance);
-
-	// Perform application initialization:
-	if (!InitInstance (hInstance, nCmdShow))
-	{
-		return FALSE;
-	}
-
-	
 	uint ColorBits = 32;
 	uint DepthBits = 16;
 
-	PIXELFORMATDESCRIPTOR pfd;
 	pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
 	pfd.nVersion = 1;
 	pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER | PFD_TYPE_RGBA;
@@ -71,8 +53,35 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	pfd.dwLayerMask = 0;
 	pfd.dwVisibleMask = 0;
 	pfd.dwDamageMask = 0;
+}
 
+int APIENTRY _tWinMain(HINSTANCE hInstance,
+                     HINSTANCE hPrevInstance,
+                     LPTSTR    lpCmdLine,
+                     int       nCmdShow)
+{
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
+
+ 	// TODO: Place code here.
+	MSG msg;
+
+	// Initialize global strings
+	MyRegisterClass(hInstance);
+
+	KThreadManager::Initialize();
+
+	// Perform application initialization:
+	if (!InitInstance (hInstance, nCmdShow))
+	{
+		return FALSE;
+	}
+	
 	HDC hDC = GetDC(hWnd);
+
+	PIXELFORMATDESCRIPTOR pfd;
+	
+	CreatePixelFormat(pfd);
 
 	int PixelFormat=ChoosePixelFormat(hDC, &pfd);
 	assert(PixelFormat);
@@ -80,20 +89,16 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	assert(success);
 
 	HWindowContext WinContext(hDC);
-
-	HRenderDevice RIDevice = RICreateContext(WinContext);
-
+	UrRenderThread* RenderThread = new UrRenderThread(WinContext); 
+	GThreadManager->CreateThread(RenderThread, Thread_Rendering);
+	UrRenderer* Renderer = RenderThread->GetRenderer();
 
 	// Main message loop:
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
-		RIClear(RIDevice, RI_CLEAR_COLOR_BUFFER, KColor(1.0f, 0.0f, 0.0f, 0.0f));
-		RIPresent(RIDevice);
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
-
-	RIDestroyDevice(RIDevice);
 
 	return (int) msg.wParam;
 }

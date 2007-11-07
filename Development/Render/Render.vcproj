@@ -142,6 +142,10 @@
 				RelativePath=".\Source\RenderInterface.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Source\UrRender.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -154,6 +158,10 @@
 			</File>
 			<File
 				RelativePath=".\Include\RenderInterface.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\UrRender.h"
 				>
 			</File>
 			<File

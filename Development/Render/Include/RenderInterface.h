@@ -18,6 +18,12 @@ struct HRenderDevice
 	HRenderDevice(HGLRC glrc, HDC hDC) : context(glrc), hdc(hDC)
 	{
 	}
+	HRenderDevice() : context(NULL), hdc(NULL) {}
+	HRenderDevice(HRenderDevice& Dev)
+	{
+		context = Dev.context;
+		hdc = Dev.hdc;
+	}
 };
 
 struct HVertexBuffer
