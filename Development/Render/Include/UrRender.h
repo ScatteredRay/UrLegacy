@@ -8,6 +8,23 @@
 
 class UrRenderer;
 
+enum RenderCommandType
+{
+	Render_Command_Kill,
+	Render_Command_FrameSync,
+	Render_Command_Execute
+};
+
+class UrRenderCommand
+{
+	RenderCommandType CommandType;
+	friend class UrRenderer;
+public:
+	virtual void Execute()=0;
+};
+
+void RenderCommand(UrRenderer* Renderer, UrRenderCommand* RenderCommand);
+
 class UrRenderThread : public KThreadJob
 {
 	HWindowContext WinContext;

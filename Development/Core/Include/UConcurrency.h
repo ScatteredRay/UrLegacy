@@ -157,7 +157,7 @@ public:
 				KIAppendLink* Link = *OldLast;
 				if(OldLast->CompareExchange(&Link->Next, Link) == Link)
 				{
-					delete Link;
+					Alloc::Free(Link);
 				}
 			}
 			else
@@ -180,6 +180,66 @@ public:
 			return Current->Value;
 		}
 	};
+};
+
+
+//////////////////////////////////////////////////////////////////////////////
+// KIQueue
+// Templated Type-Safe Queue.
+//////////////////////////////////////////////////////////////////////////////
+template<typename T, typename Alloc = NonManagedAllocator<void>, typename Verification = DebugAssertVerification>
+class KIQueue
+{
+	struct KIQueueLink
+	{
+		const T Value;
+		KIPointer<KIQueueLink> Next;
+		KIQueueLink(const T& Val) : Value(Val), Next(NULL){}
+		~KIQueueLink()
+		{
+			if(T::NeedsDestructor)
+			{
+				Value.~T();
+			}
+		}
+	};
+	KIPointer<KIQueueLink> DeQ;
+	KIPointer<KIPointer<KIQueueLink>> EnQ;
+public:
+	KIQueue() : DeQ(NULL), EnQ(&DeQ){}
+	~KIQueue(){}
+	void Enqueue(const T& Item)
+	{
+		KIPointer<KIQueueLink>* OldEnQ;
+		KIQueueLink* Link = (KIQueueLink*)Alloc::Alloc(sizeof(KIQueueLink));
+		new(Link) KIQueueLink(Item);
+
+		do
+		{
+			OldEnQ = EnQ;
+		}
+		while(OldEnQ != EnQ.CompareExchange(&Link->Next, OldEnQ));
+		*OldEnQ = Link;
+	}
+	bool Dequeue(T& DeQValue)
+	{		
+		KIQueueLink* OldDeQ = DeQ;
+
+		do
+		{
+			OldDeQ = DeQ;
+			if(OldDeQ == NULL)
+				return false;
+
+		}
+		while(OldDeQ != DeQ.CompareExchange(OldDeQ->Next, OldDeQ));
+
+		DeQValue = OldDeQ->Value;
+		Alloc::Free(OldDeQ);
+
+		return true;
+
+	}
 };
 
 #endif //_UCONCURRENCY_H_
