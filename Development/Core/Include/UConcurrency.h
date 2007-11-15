@@ -30,6 +30,7 @@ public:
 	}
 	KIInt()
 	{
+		Set(0);
 	}
 	int Increment()
 	{
@@ -223,21 +224,37 @@ public:
 	}
 	bool Dequeue(T& DeQValue)
 	{		
-		KIQueueLink* OldDeQ = DeQ;
+		KIQueueLink* _DeQ;
+		bool bSuccess = true;
 
 		do
 		{
-			OldDeQ = DeQ;
-			if(OldDeQ == NULL)
-				return false;
+			_DeQ = DeQ;
+			if(_DeQ == NULL)
+			{
+				bSuccess = false;
+				break;
+			}
 
 		}
-		while(OldDeQ != DeQ.CompareExchange(OldDeQ->Next, OldDeQ));
+		while(_DeQ != DeQ.CompareExchange(_DeQ->Next, _DeQ));
 
-		DeQValue = OldDeQ->Value;
-		Alloc::Free(OldDeQ);
+		if(bSuccess)
+		{
+			KIPointer<KIQueueLink>* OldEnQ;
+			do
+			{
+				OldEnQ = EnQ;
+				if(OldEnQ != &(_DeQ->Next))
+					break;
+			}
+			while(OldEnQ != EnQ.CompareExchange(&DeQ, OldEnQ));
 
-		return true;
+			DeQValue = _DeQ->Value;
+			Alloc::Free(_DeQ);
+		}
+
+		return bSuccess;
 
 	}
 };

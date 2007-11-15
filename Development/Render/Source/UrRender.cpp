@@ -1,23 +1,21 @@
-#include "UrRender.h" 
+#include "PrivateRender.h" 
 #include "UConcurrency.h"
-
-// Keep out of view of non render code.
-class UrRenderer
-{
-	HRenderDevice Device;
-	HWindowContext WindowContext;
-	KIQueue<UrRenderCommand*> CommandQueue;
-public:
-	UrRenderer(HWindowContext Win) : WindowContext(Win)
-	{}
-	void Loop();
-	void Render();
-	void EnqueueCommand(UrRenderCommand* RenderCommand);
-};
 
 void RenderCommand(UrRenderer* Renderer, UrRenderCommand* RenderCommand)
 {
 	Renderer->EnqueueCommand(RenderCommand);
+}
+
+bool RenderGameSync(UrRenderer* Renderer)
+{
+	// We have an int we decrement on every render thread flip, and increment
+	// on adding a new flip to the stack, only adds a new flip on the stack if
+	// there is 1 or less on there already.
+	bool bRun;
+	bRun = (Renderer->GameSync.Get() <= 1);
+	if(bRun)
+		Renderer->GameSync.Increment();
+	return bRun;
 }
 
 UrRenderThread::UrRenderThread(HWindowContext Win) : WinContext(Win)
@@ -32,28 +30,42 @@ UrRenderer* UrRenderThread::GetRenderer()
 
 void UrRenderThread::Run()
 {
-	AssertRenderThread();
+//	AssertRenderThread();
 	Renderer->Loop();
 }
 
 void UrRenderer::Loop()
 {
-	AssertRenderThread();
+	//AssertRenderThread();
 	bool bContinue = true;
 
 	Device = RICreateContext(WindowContext);
+	ClearColor = KColor(0, 0, 0, 0);
 	
 	while(bContinue)
 	{
-		UrRenderCommand* CurrentCommand;
-		do
+		UrRenderCommand* CurrentCommand = NULL;
+		while(true)
 		{
+			delete CurrentCommand;
 			CurrentCommand = NULL;
 			CommandQueue.Dequeue(CurrentCommand);
+			if(CurrentCommand == NULL)
+				continue;
+			CurrentCommand->Execute(this);
+			if(CurrentCommand->CommandType == Render_Command_Kill)
+			{
+				bContinue = false;
+				break;
+			}
+			if(CurrentCommand->CommandType == Render_Command_FrameSync)
+			{
+				GameSync.Decrement();
+				break;
+			}
 		}
-		while(CurrentCommand->CommandType != Render_Command_Kill && 
-				CurrentCommand->CommandType != Render_Command_FrameSync);
 		Render();
+		delete CurrentCommand;
 	}
 
 	RIDestroyDevice(Device);
@@ -61,12 +73,17 @@ void UrRenderer::Loop()
 
 void UrRenderer::Render()
 {
-	AssertRenderThread();
-	RIClear(Device, RI_CLEAR_COLOR_BUFFER, KColor(1.0f, 0.0f, 0.0f, 0.0f));
+	//AssertRenderThread();
+	RIClear(Device, RI_CLEAR_COLOR_BUFFER, ClearColor);
 	RIPresent(Device);
 }
 
 void UrRenderer::EnqueueCommand(UrRenderCommand* RenderCommand)
 {
 	CommandQueue.Enqueue(RenderCommand);
+}
+
+void UrClearColorCommand::Execute(UrRenderer* Renderer)
+{
+	Renderer->ClearColor = ClearColor;
 }

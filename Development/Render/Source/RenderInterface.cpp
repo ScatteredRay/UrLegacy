@@ -42,13 +42,26 @@ HVertexBuffer RICreateVertexBuffer(HRenderDevice Dev)
 {
 	HVertexBuffer VBO;
 	glGenBuffers(1, &(VBO.BufferID));
-	glBindBuffer(GL_ARRAY_BUFFER ,VBO.BufferID);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO.BufferID);
 	return VBO;
 }
 
 void RIDeleteVertexBuffer(HRenderDevice Dev, HVertexBuffer VBO)
 {
 	glDeleteBuffers(1, &(VBO.BufferID));
+}
+
+void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, VBO.BufferID);
+	glVertexPointer(3, GL_FLOAT, 3, NULL);
+	//glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+	//glNormalPointer(3, GL_FLOAT, 0, NULL);
+}
+
+void RIDrawPrimitive(HRenderDevice Dev, uint DrawType, uint StartVertex, uint PrimitiveCount)
+{
+	glDrawArrays(DrawType, StartVertex, PrimitiveCount);
 }
 
 // Move into own cpp.

@@ -46,6 +46,8 @@ struct KColorRGB
 		Green = (int8)(G*255);
 		Blue = (int8)(B*255);
 	}
+	KColorRGB() : Red(0), Green(0), Blue(0)
+	{}
 	float Redf()
 	{
 		return ((float)Red)/255;
@@ -71,10 +73,37 @@ struct KColor : public KColorRGB
 	{
 		Alpha = (int8)(A*255);
 	}
+	KColor() : KColorRGB(0, 0, 0), Alpha(0)
+	{}
 	float Alphaf()
 	{
 		return ((float)Alpha)/255;
 	}
+};
+
+struct KVertexPos
+{
+	float x;
+	float y;
+	float z;
+};
+
+struct KVertexPosTex : public KVertexPos
+{
+	float u;
+	float v;
+};
+
+struct KVertex : public KVertexPosTex
+{
+	KVertexPos Normal;
+};
+
+enum
+{
+	RI_VERTEX_XYZ,
+	RI_VERTEX_XYZUV,
+	RI_VERTEX_XYZUVN
 };
 
 // Clear flags

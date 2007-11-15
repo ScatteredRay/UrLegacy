@@ -66,6 +66,7 @@
 				LinkIncremental="2"
 				IgnoreDefaultLibraryNames="MSVCRT"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				SubSystem="1"
 				TargetMachine="1"
 			/>
@@ -143,6 +144,7 @@
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="MSVCRT"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"

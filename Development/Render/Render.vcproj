@@ -36,12 +36,14 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories=".\Include\;..\Core\Include\"
 				RuntimeLibrary="3"
 				ProgramDataBaseFileName="$(OutDir)\vc80.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -100,6 +102,7 @@
 				ProgramDataBaseFileName="$(OutDir)\vc80.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -146,6 +149,10 @@
 				RelativePath=".\Source\UrRender.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Source\UrShader.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -154,6 +161,10 @@
 			>
 			<File
 				RelativePath=".\Include\glext.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Source\PrivateRender.h"
 				>
 			</File>
 			<File

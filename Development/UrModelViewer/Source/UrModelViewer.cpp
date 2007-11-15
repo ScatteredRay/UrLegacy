@@ -93,12 +93,27 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	GThreadManager->CreateThread(RenderThread, Thread_Rendering);
 	UrRenderer* Renderer = RenderThread->GetRenderer();
 
+	bool bContinue = true;
+
+	RenderCommand(Renderer, new UrClearColorCommand(KColor(75, 75, 75, 255)));
 	// Main message loop:
-	while (GetMessage(&msg, NULL, 0, 0))
+	while(bContinue)
 	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+			if(msg.message == WM_QUIT)
+				bContinue = false;
+			else if(msg.message == WM_PAINT)
+				break;
+		}
+		if(RenderGameSync(Renderer))
+		{
+			RenderCommand(Renderer, new UrRenderCommand(Render_Command_FrameSync));
+		}
 	}
+	RenderCommand(Renderer, new UrRenderCommand(Render_Command_Kill));
 
 	return (int) msg.wParam;
 }

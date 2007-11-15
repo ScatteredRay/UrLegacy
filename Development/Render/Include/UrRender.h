@@ -20,10 +20,22 @@ class UrRenderCommand
 	RenderCommandType CommandType;
 	friend class UrRenderer;
 public:
-	virtual void Execute()=0;
+	virtual void Execute(UrRenderer* Renderer){};
+	UrRenderCommand(RenderCommandType Type) : CommandType(Type){}
+};
+
+class UrClearColorCommand : public UrRenderCommand
+{
+	KColor ClearColor;
+public:
+	void Execute(UrRenderer* Renderer);
+	UrClearColorCommand(KColor Clear) : UrRenderCommand(Render_Command_Execute), ClearColor(Clear)
+	{}
 };
 
 void RenderCommand(UrRenderer* Renderer, UrRenderCommand* RenderCommand);
+bool RenderGameSync(UrRenderer* Renderer);
+
 
 class UrRenderThread : public KThreadJob
 {

@@ -69,6 +69,7 @@
 				AdditionalLibraryDirectories="&quot;..\..\..\..\DirectX\Lib\x86\;&quot;;&quot;..\..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\lib\Win32\&quot;"
 				IgnoreDefaultLibraryNames="MSVCRT"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -149,6 +150,7 @@
 				AdditionalLibraryDirectories="&quot;..\..\..\..\DirectX\Lib\x86\;&quot;;&quot;..\..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\lib\Win32\&quot;"
 				IgnoreDefaultLibraryNames="MSVCRT"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
