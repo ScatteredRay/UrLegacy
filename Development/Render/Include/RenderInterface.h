@@ -86,6 +86,10 @@ struct KVertexPos
 	float x;
 	float y;
 	float z;
+	KVertexPos(float X, float Y, float Z) : x(X), y(Y), z(Z)
+	{}
+	KVertexPos() : x(0.0f), y(0.0f), z(0.0f)
+	{}
 };
 
 struct KVertexPosTex : public KVertexPos
@@ -117,6 +121,8 @@ bool RIDestroyDevice(HRenderDevice Dev);
 void RIPresent(HRenderDevice Dev);
 void RIClear(HRenderDevice Dev, uint ClearFlags, KColor& Clear = KColor(0, 0, 0, 0), float Depth = 1.0f, int Stencil = 0, KColor& Accum = KColor(0, 0, 0, 0));
 HVertexBuffer RICreateVertexBuffer(HRenderDevice Dev);
+void RISetBufferData(HRenderDevice Dev, HVertexBuffer VBO, void* Data, size_t Size);
+void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO);
 void RIDeleteVertexBuffer(HRenderDevice Dev, HVertexBuffer VBO);
 void initUrsaGL();
 

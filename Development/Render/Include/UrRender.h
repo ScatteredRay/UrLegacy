@@ -29,7 +29,18 @@ class UrClearColorCommand : public UrRenderCommand
 	KColor ClearColor;
 public:
 	void Execute(UrRenderer* Renderer);
-	UrClearColorCommand(KColor Clear) : UrRenderCommand(Render_Command_Execute), ClearColor(Clear)
+	UrClearColorCommand(KColor& Clear) : UrRenderCommand(Render_Command_Execute), ClearColor(Clear)
+	{}
+};
+
+class UrCreateGridCommand : public UrRenderCommand
+{
+	KColor GridColor;
+	int NumGridLines;
+	float GridSpacing;
+public:
+	void Execute(UrRenderer* Renderer);
+	UrCreateGridCommand(KColor& Color, int NumLines, float Spacing) : UrRenderCommand(Render_Command_Execute), GridColor(Color), NumGridLines(NumLines), GridSpacing(Spacing)
 	{}
 };
 

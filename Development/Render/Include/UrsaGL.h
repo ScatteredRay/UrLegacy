@@ -8,6 +8,7 @@
 extern PFNGLGENBUFFERSPROC glGenBuffers;
 extern PFNGLDELETEBUFFERSPROC glDeleteBuffers;
 extern PFNGLBINDBUFFERPROC glBindBuffer;
+extern PFNGLBUFFERDATAPROC glBufferData;
 
 void initUrsaGL();
 

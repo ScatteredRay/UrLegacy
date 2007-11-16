@@ -6,6 +6,7 @@
 PFNGLGENBUFFERSPROC glGenBuffers;
 PFNGLDELETEBUFFERSPROC glDeleteBuffers;
 PFNGLBINDBUFFERPROC glBindBuffer;
+PFNGLBUFFERDATAPROC glBufferData;
 
 HRenderDevice RICreateContext(HWindowContext WC)
 {
@@ -51,6 +52,12 @@ void RIDeleteVertexBuffer(HRenderDevice Dev, HVertexBuffer VBO)
 	glDeleteBuffers(1, &(VBO.BufferID));
 }
 
+void RISetBufferData(HRenderDevice Dev, HVertexBuffer VBO, void* Data, size_t Size)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, VBO.BufferID);
+	glBufferData(GL_ARRAY_BUFFER, Size, Data, GL_STATIC_DRAW);
+}
+
 void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO.BufferID);
@@ -70,4 +77,5 @@ void initUrsaGL()
 	glGenBuffers = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glGenBuffers");
 	glDeleteBuffers = (PFNGLDELETEBUFFERSPROC)wglGetProcAddress("glDeleteBuffers");
 	glBindBuffer = (PFNGLBINDBUFFERPROC)wglGetProcAddress("glBindBuffer");
+	glBufferData = (PFNGLBUFFERDATAPROC)wglGetProcAddress("glBufferData");
 } 
