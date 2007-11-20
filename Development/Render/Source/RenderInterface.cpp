@@ -61,7 +61,7 @@ void RISetBufferData(HRenderDevice Dev, HVertexBuffer VBO, void* Data, size_t Si
 void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO.BufferID);
-	glVertexPointer(3, GL_FLOAT, 3, NULL);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	//glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 	//glNormalPointer(3, GL_FLOAT, 0, NULL);
 }
@@ -71,9 +71,16 @@ void RIDrawPrimitive(HRenderDevice Dev, uint DrawType, uint StartVertex, uint Pr
 	glDrawArrays(DrawType, StartVertex, PrimitiveCount);
 }
 
+void RISetColor(KColor& Color)
+{
+	glColor3f(Color.Redf(), Color.Greenf(), Color.Bluef());
+}
+
 // Move into own cpp.
 void initUrsaGL()
 {
+	const unsigned char* Extensions = glGetString( GL_EXTENSIONS );
+
 	glGenBuffers = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glGenBuffers");
 	glDeleteBuffers = (PFNGLDELETEBUFFERSPROC)wglGetProcAddress("glDeleteBuffers");
 	glBindBuffer = (PFNGLBINDBUFFERPROC)wglGetProcAddress("glBindBuffer");

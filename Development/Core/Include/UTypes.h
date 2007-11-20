@@ -177,7 +177,7 @@ public:
 	void AddItem(const T& Item)
 	{
 		Add(1);
-		First[Count] = Item;
+		First[Count] = Item; //TODO: Not working!?!?!?
 	}
 
 	uint Num()

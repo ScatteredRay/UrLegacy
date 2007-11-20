@@ -80,7 +80,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	HDC hDC = GetDC(hWnd);
 
 	PIXELFORMATDESCRIPTOR pfd;
-	
+
 	CreatePixelFormat(pfd);
 
 	int PixelFormat=ChoosePixelFormat(hDC, &pfd);
@@ -96,6 +96,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	bool bContinue = true;
 
 	RenderCommand(Renderer, new UrClearColorCommand(KColor(75, 75, 75, 255)));
+	RenderCommand(Renderer, new UrCreateGridCommand(KColor(0, 0, 255, 255), 5, 0.2f));
 	// Main message loop:
 	while(bContinue)
 	{

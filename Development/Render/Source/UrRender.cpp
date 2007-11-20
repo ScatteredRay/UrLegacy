@@ -1,5 +1,6 @@
 #include "PrivateRender.h" 
 #include "UConcurrency.h"
+#include "UrsaGL.h"
 
 void RenderCommand(UrRenderer* Renderer, UrRenderCommand* RenderCommand)
 {
@@ -40,6 +41,7 @@ void UrRenderer::Loop()
 	bool bContinue = true;
 
 	Device = RICreateContext(WindowContext);
+	initUrsaGL();
 	ClearColor = KColor(0, 0, 0, 0);
 	
 	while(bContinue)
@@ -75,6 +77,10 @@ void UrRenderer::Render()
 {
 	//AssertRenderThread();
 	RIClear(Device, RI_CLEAR_COLOR_BUFFER, ClearColor);
+	for(uint i=0; i<RenderGroups.Num(); i++)
+	{
+		RenderGroups[i]->Render();
+	}
 	RIPresent(Device);
 }
 
@@ -92,14 +98,18 @@ void UrClearColorCommand::Execute(UrRenderer* Renderer)
 
 // World Grid
 
+GLenum LastError;
 
 class UrGridModel : public UrModel
 {
 	HVertexBuffer Buffer;
+	uint NumPrimitives;
+	KColor GridColor;
 public:
-	UrGridModel(UrRenderer* renderer, KColor Color, int NumLines, float GridSpacing) : UrModel(renderer)
+	UrGridModel(UrRenderer* renderer, KColor Color, int NumLines, float GridSpacing) : UrModel(renderer), GridColor(Color)
 	{
-		KVertexPos* GridVerts = new KVertexPos[4 * NumLines];
+		NumPrimitives = 2 * NumLines;
+		KVertexPos* GridVerts = new KVertexPos[NumPrimitives * 2];
 		float Min = (((float)NumLines-1)/2.0f) * GridSpacing * -1.0f;
 		float Max = (((float)NumLines-1)/2.0f) * GridSpacing;
 		for(int x=0; x<NumLines; x++)
@@ -114,10 +124,13 @@ public:
 		}
 		Buffer = RICreateVertexBuffer(Renderer->Device);
 		RISetBufferData(Renderer->Device, Buffer, GridVerts, 4 * NumLines * sizeof(KVertexPos));
+		delete GridVerts;
 	}
 	void Render(UrModelInstance* Instance)
 	{
-
+		RISetColor(GridColor);
+		RIBindBuffer(Renderer->Device, Buffer);
+		RIDrawPrimitive(Renderer->Device, RI_PRIMITIVE_LINES, 0, NumPrimitives);
 	}
 };
 
@@ -127,4 +140,6 @@ void UrCreateGridCommand::Execute(UrRenderer* Renderer)
 	UrRenderGroup* RGroup = new UrRenderGroup(Model);
 	UrModelInstance* Instance = new UrModelInstance(Model);
 	RGroup->AddInstance(Instance);
+	Renderer->RenderGroups.AddItem(RGroup);
+	Renderer->RenderGroups[Renderer->RenderGroups.Num()-1] = RGroup;
 }

@@ -116,6 +116,19 @@ enum
 #define RI_CLEAR_ACCUM_BUFFER GL_ACCUM_BUFFER_BIT
 #define RI_CLEAR_STENCIL_BUFFER GL_STENCIL_BUFFER_BIT
 
+
+#define RI_PRIMITIVE_POINTS			GL_POINTS
+#define RI_PRIMITIVE_LINES			GL_LINES
+#define RI_PRIMITIVE_LINE_LOOP		GL_LINE_LOOP
+#define RI_PRIMITIVE_LINE_STRIP		GL_LINE_STRIP
+#define RI_PRIMITIVE_TRIANGLES		GL_TRIANGLES
+#define RI_PRIMITIVE_TRIANGLE_STRIP	GL_TRIANGLE_STRIP
+#define RI_PRIMITIVE_TRIANGLE_FAN	GL_TRIANGLE_FAN
+#define RI_PRIMITIVE_QUADS			GL_QUADS
+#define RI_PRIMITIVE_QUAD_STRIP		GL_QUAD_STRIP
+#define RI_PRIMITIVE_POLYGON		GL_POLYGON
+
+
 HRenderDevice RICreateContext(HWindowContext WC);
 bool RIDestroyDevice(HRenderDevice Dev);
 void RIPresent(HRenderDevice Dev);
@@ -123,7 +136,9 @@ void RIClear(HRenderDevice Dev, uint ClearFlags, KColor& Clear = KColor(0, 0, 0,
 HVertexBuffer RICreateVertexBuffer(HRenderDevice Dev);
 void RISetBufferData(HRenderDevice Dev, HVertexBuffer VBO, void* Data, size_t Size);
 void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO);
+void RIDrawPrimitive(HRenderDevice Dev, uint DrawType, uint StartVertex, uint PrimitiveCount);
 void RIDeleteVertexBuffer(HRenderDevice Dev, HVertexBuffer VBO);
+void RISetColor(KColor& Color);
 void initUrsaGL();
 
 #endif //_RENDERINTERFACE_H_

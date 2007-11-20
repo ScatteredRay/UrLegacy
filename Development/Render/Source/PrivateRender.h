@@ -15,10 +15,9 @@ public:
 	KIQueue<UrRenderCommand*> CommandQueue;
 	KIInt GameSync;
 	KColor ClearColor;
-	KArray<UrModel> ModelList;
-	KArray<UrRenderGroup> RenderGroups;
+	KArray<UrRenderGroup*> RenderGroups;
 public:
-	UrRenderer(HWindowContext Win) : WindowContext(Win), GameSync(0)
+	UrRenderer(HWindowContext Win) : WindowContext(Win), GameSync(0), RenderGroups()
 	{}
 	void Loop();
 	void Render();
@@ -60,6 +59,7 @@ public:
 	void AddInstance(UrModelInstance* Instance)
 	{
 		Instances.AddItem(Instance);
+		Instances[Instances.Num()-1] = Instance;
 	}
 	virtual void Render()
 	{
