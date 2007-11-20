@@ -1,4 +1,6 @@
 #include "RenderInterface.h" 
+
+#if USING_GL
 #include "Core.h"
 #include "UTypes.h"
 #include "UrsaGL.h"
@@ -10,8 +12,9 @@ PFNGLBUFFERDATAPROC glBufferData;
 
 HRenderDevice RICreateContext(HWindowContext WC)
 {
-	HRenderDevice Dev(wglCreateContext(WC.hdc), WC.hdc);
-	wglMakeCurrent(WC.hdc, Dev.context); // in GL we assume only one device per thread, so we just go ahead and make it current.
+	HDC hdc = GetDC(WC.hWnd);
+	HRenderDevice Dev(wglCreateContext(hdc), hdc);
+	wglMakeCurrent(hdc, Dev.context); // in GL we assume only one device per thread, so we just go ahead and make it current.
 	return Dev;
 }
 
@@ -24,6 +27,10 @@ void RIPresent(HRenderDevice Dev)
 {
 	SwapBuffers(Dev.hdc);
 }
+
+void RIBeginScene(HRenderDevice Dev){}
+
+void RIEndScene(HRenderDevice Dev){}
 
 //TODO: break the optionals into seperate functions so we don't bother all the run time checking.
 void RIClear(HRenderDevice Dev, uint ClearFlags, KColor& Clear, float Depth, int Stencil, KColor& Accum)
@@ -39,7 +46,7 @@ void RIClear(HRenderDevice Dev, uint ClearFlags, KColor& Clear, float Depth, int
 	glClear(ClearFlags);
 }
 
-HVertexBuffer RICreateVertexBuffer(HRenderDevice Dev)
+HVertexBuffer RICreateVertexBuffer(HRenderDevice Dev, size_t Size)
 {
 	HVertexBuffer VBO;
 	glGenBuffers(1, &(VBO.BufferID));
@@ -61,7 +68,7 @@ void RISetBufferData(HRenderDevice Dev, HVertexBuffer VBO, void* Data, size_t Si
 void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO.BufferID);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glVertexPointer(3, GL_FLOAT, 3*4, NULL);
 	//glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 	//glNormalPointer(3, GL_FLOAT, 0, NULL);
 }
@@ -71,12 +78,11 @@ void RIDrawPrimitive(HRenderDevice Dev, uint DrawType, uint StartVertex, uint Pr
 	glDrawArrays(DrawType, StartVertex, PrimitiveCount);
 }
 
-void RISetColor(KColor& Color)
+void RISetColor(HRenderDevice Dev, KColor& Color)
 {
 	glColor3f(Color.Redf(), Color.Greenf(), Color.Bluef());
 }
 
-// Move into own cpp.
 void initUrsaGL()
 {
 	const unsigned char* Extensions = glGetString( GL_EXTENSIONS );
@@ -86,3 +92,5 @@ void initUrsaGL()
 	glBindBuffer = (PFNGLBINDBUFFERPROC)wglGetProcAddress("glBindBuffer");
 	glBufferData = (PFNGLBUFFERDATAPROC)wglGetProcAddress("glBufferData");
 } 
+
+#endif //USING_GL

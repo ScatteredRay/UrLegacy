@@ -1,6 +1,5 @@
 #include "PrivateRender.h" 
 #include "UConcurrency.h"
-#include "UrsaGL.h"
 
 void RenderCommand(UrRenderer* Renderer, UrRenderCommand* RenderCommand)
 {
@@ -41,7 +40,9 @@ void UrRenderer::Loop()
 	bool bContinue = true;
 
 	Device = RICreateContext(WindowContext);
+#if USING_GL
 	initUrsaGL();
+#endif //USING_GL
 	ClearColor = KColor(0, 0, 0, 0);
 	
 	while(bContinue)
@@ -76,11 +77,13 @@ void UrRenderer::Loop()
 void UrRenderer::Render()
 {
 	//AssertRenderThread();
+	RIBeginScene(Device);
 	RIClear(Device, RI_CLEAR_COLOR_BUFFER, ClearColor);
 	for(uint i=0; i<RenderGroups.Num(); i++)
 	{
 		RenderGroups[i]->Render();
 	}
+	RIEndScene(Device);
 	RIPresent(Device);
 }
 
@@ -120,13 +123,14 @@ public:
 			GridVerts[NumLines*2+y*2] = KVertexPos(Min, Min+y*GridSpacing, 0.0f);
 			GridVerts[NumLines*2+y*2+1] = KVertexPos(Max, Min+y*GridSpacing, 0.0f);
 		}
-		Buffer = RICreateVertexBuffer(Renderer->Device);
-		RISetBufferData(Renderer->Device, Buffer, GridVerts, 4 * NumLines * sizeof(KVertexPos));
+		const int VBOSize = 4 * NumLines * sizeof(KVertexPos);
+		Buffer = RICreateVertexBuffer(Renderer->Device, VBOSize);
+		RISetBufferData(Renderer->Device, Buffer, GridVerts, VBOSize);
 		delete GridVerts;
 	}
 	void Render(UrModelInstance* Instance)
 	{
-		RISetColor(GridColor);
+		RISetColor(Renderer->Device, GridColor);
 		RIBindBuffer(Renderer->Device, Buffer);
 		RIDrawPrimitive(Renderer->Device, RI_PRIMITIVE_LINES, 0, NumPrimitives);
 	}

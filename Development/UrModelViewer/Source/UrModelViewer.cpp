@@ -4,7 +4,6 @@
 #include "Core.h"
 #include "UrModelViewer.h"
 #include "RenderInterface.h"
-#include "UrsaGL.h"
 #include "UThreading.h"
 #include "UrRender.h"
 
@@ -22,6 +21,7 @@ BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
+#if USING_GL
 void CreatePixelFormat(PIXELFORMATDESCRIPTOR& pfd)
 {
 	uint ColorBits = 32;
@@ -54,6 +54,7 @@ void CreatePixelFormat(PIXELFORMATDESCRIPTOR& pfd)
 	pfd.dwVisibleMask = 0;
 	pfd.dwDamageMask = 0;
 }
+#endif //USING_GL
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
@@ -79,6 +80,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	
 	HDC hDC = GetDC(hWnd);
 
+#if USING_GL
 	PIXELFORMATDESCRIPTOR pfd;
 
 	CreatePixelFormat(pfd);
@@ -87,8 +89,13 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	assert(PixelFormat);
 	bool success = SetPixelFormat(hDC, PixelFormat, &pfd);
 	assert(success);
+#endif //USING_GL
+#if USING_DX
+	gD3D = Direct3DCreate9(D3D_SDK_VERSION);
+	
+#endif //USING_DX
 
-	HWindowContext WinContext(hDC);
+	HWindowContext WinContext(hWnd);
 	UrRenderThread* RenderThread = new UrRenderThread(WinContext); 
 	GThreadManager->CreateThread(RenderThread, Thread_Rendering);
 	UrRenderer* Renderer = RenderThread->GetRenderer();
@@ -115,6 +122,10 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		}
 	}
 	RenderCommand(Renderer, new UrRenderCommand(Render_Command_Kill));
+
+#if USING_DX
+	gD3D->Release();
+#endif //USING_DX
 
 	return (int) msg.wParam;
 }

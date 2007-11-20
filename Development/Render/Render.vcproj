@@ -142,7 +142,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Source\RenderInterface.cpp"
+				RelativePath=".\Source\RenderInterfaceGL.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source\RenderInterfaceX.cpp"
 				>
 			</File>
 			<File
