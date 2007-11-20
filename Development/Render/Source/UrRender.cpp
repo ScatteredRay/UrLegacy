@@ -98,8 +98,6 @@ void UrClearColorCommand::Execute(UrRenderer* Renderer)
 
 // World Grid
 
-GLenum LastError;
-
 class UrGridModel : public UrModel
 {
 	HVertexBuffer Buffer;
