@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="Core"
 	ProjectGUID="{B6F3B108-27E6-470C-B5E4-9177FC3FD654}"
 	RootNamespace="Core"
 	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -159,6 +160,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Source\UMath.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Source\UMemory.cpp"
 				>
 			</File>
@@ -198,6 +203,10 @@
 			</File>
 			<File
 				RelativePath=".\Include\UConcurrency.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\UMath.h"
 				>
 			</File>
 			<File

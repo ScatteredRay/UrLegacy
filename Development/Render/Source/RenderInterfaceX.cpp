@@ -4,6 +4,7 @@
 #if USING_DX
 #include "Core.h"
 #include "UTypes.h"
+#include "UMath.h"
 
 IDirect3D9* gD3D;
 

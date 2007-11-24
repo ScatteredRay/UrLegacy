@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Development\Core\Core.vcproj", "{B6F3B108-27E6-470C-B5E4-9177FC3FD654}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ursa-Launch", "Development\Launch\UrsaGame-Launch.vcproj", "{68EF08F7-DBEF-4A00-A0FE-15565467CB27}"
@@ -45,9 +45,7 @@ Global
 		{1F945E5F-4CB3-46C7-B970-1B93E3256052}.Release|Win32.ActiveCfg = Debug|Win32
 		{1F945E5F-4CB3-46C7-B970-1B93E3256052}.Release|Win32.Build.0 = Debug|Win32
 		{1AC08CB3-5820-4F81-A7B0-43FFF118AB7D}.Debug|Win32.ActiveCfg = Debug|Win32
-		{1AC08CB3-5820-4F81-A7B0-43FFF118AB7D}.Debug|Win32.Build.0 = Debug|Win32
 		{1AC08CB3-5820-4F81-A7B0-43FFF118AB7D}.Release|Win32.ActiveCfg = Debug|Win32
-		{1AC08CB3-5820-4F81-A7B0-43FFF118AB7D}.Release|Win32.Build.0 = Debug|Win32
 		{96DAA032-BC9D-4015-80DC-B056247E8126}.Debug|Win32.ActiveCfg = Debug|Win32
 		{96DAA032-BC9D-4015-80DC-B056247E8126}.Debug|Win32.Build.0 = Debug|Win32
 		{96DAA032-BC9D-4015-80DC-B056247E8126}.Release|Win32.ActiveCfg = Release|Win32
