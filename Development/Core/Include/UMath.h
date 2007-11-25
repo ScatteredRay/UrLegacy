@@ -1,5 +1,17 @@
 #ifndef _UMATH_H_
 #define _UMATH_H_
+#include "UPlatform.h"
+
+struct KVector
+{
+	float x;
+	float y;
+	float z;
+	KVector(float X, float Y, float Z) : x(X), y(Y), z(Z)
+	{}
+	KVector() : x(0.0f), y(0.0f), z(0.0f)
+	{}
+};
 
 struct KMatrix
 {
@@ -81,7 +93,7 @@ struct KMatrix
 		}
 		return NewMat;
 	}
-	KMatrix& operator*=(const KMatrix& Other)
+	KMatrix operator*=(const KMatrix& Other)
 	{
 		KMatrix NewMat;
 		for(uint i=0; i<4; i++)
@@ -97,6 +109,14 @@ struct KMatrix
 };
 
 KMatrix& MatrixIdentity(KMatrix* Dest);
-KMatrix MatrixIdentity(); 
+KMatrix MatrixIdentity();
+KMatrix& MatrixScale(KMatrix* Dest, float Scale);
+KMatrix MatrixScale(float Scale);
+KMatrix& MatrixScale3D(KMatrix* Dest, KVector Scale);
+KMatrix MatrixScale3D(KVector Scale);
+KMatrix& MatrixTranslate(KMatrix* Dest, KVector Delta);
+KMatrix MatrixTranslate(KVector Delta);
+KMatrix& MatrixPerspectiveProjection(KMatrix* Dest, float NearClip, float FarClip, float HFov, float VFov);
+KMatrix MatrixPerspectiveProjection(float NearClip, float FarClip, float HFov, float VFov);
 
 #endif //UMATH_H_
