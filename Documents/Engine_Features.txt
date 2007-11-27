@@ -9,11 +9,21 @@ Engine feature dependency graph
 			- Remote procedures
 				- Reliable networking			
 	- Gametypes
+	- Levels
+		- Level Import
+			- Game object decleration.
+		- Level Culling
+	- Game Objects
+		- Player Spawns
+		- Pickups	
 	- Ship dynamcs
+		- Ships
 		- Physics
 			- Collision
 				- Collision Import/generation
+				- Spatial partioning
 	- Weaponry
+		- Weapons
 		- Collision
 		- Particles
 		- Import attach points.
@@ -28,6 +38,7 @@ Engine feature dependency graph
 		- Particles
 		- Decals
 		- Camera system
+		- Mount Points
 	- Audio
 		- Sound import
 		- Sound positioning
@@ -41,9 +52,12 @@ Engine feature dependency graph
 		- Keyboard
 	- Import
 		- Build script reader
-		- Mesh importers
-			- Obj?
-			- Collada?
+		- Mesh import
+			- Vertices
+			- UVs
+			- Mount Points
+			- Mesh importers
+				- Obj?
 		- Texture importers
 			- PNG?
 		- Sound importers

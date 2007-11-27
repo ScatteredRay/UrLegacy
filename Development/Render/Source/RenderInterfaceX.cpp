@@ -102,4 +102,9 @@ void RISetColor(HRenderDevice Dev, KColor& Color)
 {
 }
 
+void RISetMatrix(HRenderDevice Dev, uint TransformState, KMatrix& Transform)
+{
+	Dev.Device->SetTransform((D3DTRANSFORMSTATETYPE)TransformState, (D3DMATRIX*)&Transform);
+}
+
 #endif //USING_DX

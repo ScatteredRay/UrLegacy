@@ -2,6 +2,7 @@
 #define _PRIVATERENDER_H_
 
 #include "UrRender.h"
+#include "UMath.h"
 
 class UrRenderGroup;
 class UrModel;
@@ -15,6 +16,8 @@ public:
 	KIQueue<UrRenderCommand*> CommandQueue;
 	KIInt GameSync;
 	KColor ClearColor;
+	KMatrix View;
+	KMatrix Projection;
 	KArray<UrRenderGroup*> RenderGroups;
 public:
 	UrRenderer(HWindowContext Win) : WindowContext(Win), GameSync(0), RenderGroups()

@@ -83,6 +83,11 @@ void RISetColor(HRenderDevice Dev, KColor& Color)
 	glColor3f(Color.Redf(), Color.Greenf(), Color.Bluef());
 }
 
+void RISetMatrix(HRenderDevice Dev, uint TransformState, KMatrix& Transform)
+{
+
+}
+
 void initUrsaGL()
 {
 	const unsigned char* Extensions = glGetString( GL_EXTENSIONS );

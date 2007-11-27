@@ -1,0 +1,49 @@
+Game Asset Graph
+
+- Game
+	- Level
+		- Layout
+		- Deco
+		- Particles
+		- Lights
+		- Textures
+		- Skybox ?
+		- Levels
+			- ?
+	- Ship
+		- Model
+		- Texture
+		- Mount points (Emitters, weapons, etc.)
+		- Particles (Exhaust)
+		- Collision Hull
+		- Ships
+			- ?
+	- Pickup
+		- Model
+		- Texture
+		- Pickups
+			- Ammo
+				- ?
+			- Weapons
+				- ?
+			- Health
+	- Weapon
+		- Weapon Mounted
+			- Model
+			- Texture
+			- Weapons
+				- ?
+		- Beam/Rockets
+			- Model
+			- Texture
+			- Particles
+			- Beams
+				- ?
+			- Rockets
+				- ?
+	- Decals
+		- Hit Decals
+			- ?
+
+Sounds?
+

@@ -44,6 +44,18 @@ public:
 	{}
 };
 
+class UrCameraProjectionCommand : public UrRenderCommand
+{
+	float NearClip;
+	float FarClip;
+	float HFOV;
+	float VFOV;
+public:
+	void Execute(UrRenderer* Renderer);
+	UrCameraProjectionCommand(float NearClipPlane, float FarClipPlane, float HorizontalFov, float VerticalFov) : UrRenderCommand(Render_Command_Execute), NearClip(NearClipPlane), FarClip(FarClipPlane), HFOV(HorizontalFov), VFOV(VerticalFov)
+	{}
+};
+
 void RenderCommand(UrRenderer* Renderer, UrRenderCommand* RenderCommand);
 bool RenderGameSync(UrRenderer* Renderer);
 

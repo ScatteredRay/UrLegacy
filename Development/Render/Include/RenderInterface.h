@@ -193,6 +193,9 @@ enum
 #define RI_PRIMITIVE_TRIANGLES		D3DPT_TRIANGLELIST
 #define RI_PRIMITIVE_TRIANGLE_STRIP	D3DPT_TRIANGLESTRIP
 #define RI_PRIMITIVE_TRIANGLE_FAN	D3DPT_TRIANGLEFAN
+
+#define RI_TRANSFORM_VIEW		D3DTS_VIEW
+#define RI_TRANSFORM_PROJECTION	D3DTS_PROJECTION
 #endif //USING_DX
 
 
@@ -208,6 +211,7 @@ void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO);
 void RIDrawPrimitive(HRenderDevice Dev, uint DrawType, uint StartVertex, uint PrimitiveCount);
 void RIDeleteVertexBuffer(HRenderDevice Dev, HVertexBuffer VBO);
 void RISetColor(HRenderDevice Dev, KColor& Color);
+void RISetMatrix(HRenderDevice Dev, uint TransformState, struct KMatrix& Transform);
 #if USING_GL
 void initUrsaGL();
 #endif //USING_GL

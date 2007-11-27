@@ -44,6 +44,8 @@ void UrRenderer::Loop()
 	initUrsaGL();
 #endif //USING_GL
 	ClearColor = KColor(0, 0, 0, 0);
+	MatrixIdentity(&View);
+	MatrixIdentity(&Projection);
 	
 	while(bContinue)
 	{
@@ -79,6 +81,8 @@ void UrRenderer::Render()
 	//AssertRenderThread();
 	RIBeginScene(Device);
 	RIClear(Device, RI_CLEAR_COLOR_BUFFER, ClearColor);
+	RISetMatrix(Device, RI_TRANSFORM_VIEW, View);
+	RISetMatrix(Device, RI_TRANSFORM_PROJECTION, Projection);
 	for(uint i=0; i<RenderGroups.Num(); i++)
 	{
 		RenderGroups[i]->Render();
@@ -144,4 +148,9 @@ void UrCreateGridCommand::Execute(UrRenderer* Renderer)
 	RGroup->AddInstance(Instance);
 	Renderer->RenderGroups.AddItem(RGroup);
 	Renderer->RenderGroups[Renderer->RenderGroups.Num()-1] = RGroup;
+}
+
+void UrCameraProjectionCommand::Execute(UrRenderer *Renderer)
+{
+	MatrixPerspectiveProjection(&Renderer->Projection, NearClip, FarClip, HFOV, VFOV);
 }

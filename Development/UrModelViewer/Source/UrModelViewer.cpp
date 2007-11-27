@@ -104,6 +104,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 	RenderCommand(Renderer, new UrClearColorCommand(KColor(75, 75, 75, 255)));
 	RenderCommand(Renderer, new UrCreateGridCommand(KColor(0, 0, 255, 255), 5, 0.2f));
+	RenderCommand(Renderer, new UrCameraProjectionCommand(1.0f, 100.0f, 1.6f, 1.6f));
 	// Main message loop:
 	while(bContinue)
 	{

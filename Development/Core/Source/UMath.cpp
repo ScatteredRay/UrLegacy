@@ -19,10 +19,10 @@ KMatrix MatrixIdentity()
 
 KMatrix& MatrixScale(KMatrix* Dest, float Scale)
 {
-	Dest->SetElements(	Scale, 0.0f, 0.0f, 0.0f,
-						0.0f, Scale, 0.0f, 0.0f,
-						0.0f, 0.0f, Scale, 0.0f,
-						0.0f, 0.0f, 0.0f, 1.0f);
+	Dest->SetElements(	Scale,	0.0f,	0.0f,	0.0f,
+						0.0f,	Scale,	0.0f,	0.0f,
+						0.0f,	0.0f,	Scale,	0.0f,
+						0.0f,	0.0f,	0.0f,	1.0f);
 	return *Dest;
 }
 
@@ -35,10 +35,10 @@ KMatrix MatrixScale(float Scale)
 
 KMatrix& MatrixScale3D(KMatrix* Dest, KVector Scale)
 {
-	Dest->SetElements(	Scale.x, 0.0f, 0.0f, 0.0f,
-						0.0f, Scale.y, 0.0f, 0.0f,
-						0.0f, 0.0f, Scale.z, 0.0f,
-						0.0f, 0.0f, 0.0f, 1.0f);
+	Dest->SetElements(	Scale.x,	0.0f,		0.0f,		0.0f,
+						0.0f,		Scale.y,	0.0f,		0.0f,
+						0.0f,		0.0f,		Scale.z,	0.0f,
+						0.0f,		0.0f,		0.0f,		1.0f);
 	return *Dest;
 }
 
