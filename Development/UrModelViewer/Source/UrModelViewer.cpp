@@ -61,7 +61,7 @@ void CreatePixelFormat(PIXELFORMATDESCRIPTOR& pfd)
 }
 #endif //USING_GL
 
-#include "d3dx9.h"
+#include <d3dx9.h>
 #pragma comment(lib, "d3dx9.lib")
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,
@@ -117,7 +117,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	bool bContinue = true;
 
 	RenderCommand(Renderer, new UrClearColorCommand(KColor(75, 75, 75, 255)));
-	RenderCommand(Renderer, new UrCreateGridCommand(KColor(0, 0, 255, 255), 5, 0.2f));
+	RenderCommand(Renderer, new UrCreateGridCommand(KColor(0, 0, 255, 255), 10, 0.5f));
 	RenderCommand(Renderer, new UrCameraProjectionCommand(1.0f, 100.0f, 1.6f, 1.6f));
 	// Main message loop:
 	while(bContinue)
@@ -254,8 +254,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			int xPos = LOWORD(lParam);
 			int yPos = HIWORD(lParam);
 
-			CameraYaw += (UR_PI/180.0f)*(xPos - OldXPos);
-			CameraPitch -= (UR_PI/180.0f)*(yPos - OldYPos);
+			CameraYaw -= (UR_PI/180.0f)*(OldXPos - xPos);
+			CameraPitch += (UR_PI/180.0f)*(OldYPos - yPos);
 
 			OldXPos = xPos;
 			OldYPos = yPos;

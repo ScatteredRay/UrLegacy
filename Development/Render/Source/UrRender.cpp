@@ -80,7 +80,7 @@ void UrRenderer::Render()
 {
 	//AssertRenderThread();
 	RIBeginScene(Device);
-	RIClear(Device, RI_CLEAR_COLOR_BUFFER | RI_CLEAR_DEPTH_BUFFER | RI_CLEAR_STENCIL_BUFFER, ClearColor);
+	RIClear(Device, RI_CLEAR_COLOR_BUFFER | RI_CLEAR_DEPTH_BUFFER, ClearColor, 1.0f);
 	RISetMatrix(Device, RI_TRANSFORM_VIEW, View);
 	RISetMatrix(Device, RI_TRANSFORM_PROJECTION, Projection);
 	for(uint i=0; i<RenderGroups.Num(); i++)
