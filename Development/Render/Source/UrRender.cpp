@@ -80,7 +80,7 @@ void UrRenderer::Render()
 {
 	//AssertRenderThread();
 	RIBeginScene(Device);
-	RIClear(Device, RI_CLEAR_COLOR_BUFFER, ClearColor);
+	RIClear(Device, RI_CLEAR_COLOR_BUFFER | RI_CLEAR_DEPTH_BUFFER | RI_CLEAR_STENCIL_BUFFER, ClearColor);
 	RISetMatrix(Device, RI_TRANSFORM_VIEW, View);
 	RISetMatrix(Device, RI_TRANSFORM_PROJECTION, Projection);
 	for(uint i=0; i<RenderGroups.Num(); i++)
@@ -150,7 +150,12 @@ void UrCreateGridCommand::Execute(UrRenderer* Renderer)
 	Renderer->RenderGroups[Renderer->RenderGroups.Num()-1] = RGroup;
 }
 
-void UrCameraProjectionCommand::Execute(UrRenderer *Renderer)
+void UrCameraProjectionCommand::Execute(UrRenderer* Renderer)
 {
 	MatrixPerspectiveProjection(&Renderer->Projection, NearClip, FarClip, HFOV, VFOV);
+}
+
+void UrViewTransformCommand::Execute(UrRenderer* Renderer)
+{
+	Renderer->View = Transform;
 }

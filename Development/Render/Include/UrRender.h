@@ -3,6 +3,7 @@
 
 #include "UThreading.h"
 #include "RenderInterface.h"
+#include "UMath.h"
 
 #define AssertRenderThread() assert(GetRunningThread()->GetFlags() | Thread_Rendering)
 
@@ -53,6 +54,15 @@ class UrCameraProjectionCommand : public UrRenderCommand
 public:
 	void Execute(UrRenderer* Renderer);
 	UrCameraProjectionCommand(float NearClipPlane, float FarClipPlane, float HorizontalFov, float VerticalFov) : UrRenderCommand(Render_Command_Execute), NearClip(NearClipPlane), FarClip(FarClipPlane), HFOV(HorizontalFov), VFOV(VerticalFov)
+	{}
+};
+
+class UrViewTransformCommand : public UrRenderCommand
+{
+	KMatrix Transform;
+public:
+	void Execute(UrRenderer* Renderer);
+	UrViewTransformCommand(KMatrix& InTransform) : UrRenderCommand(Render_Command_Execute), Transform(InTransform)
 	{}
 };
 

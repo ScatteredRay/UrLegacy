@@ -78,7 +78,8 @@ struct KMatrix
 	}
 	KMatrix& operator=(const KMatrix& Other)
 	{
-		
+		appMemcpy(Mat, Other.Mat, sizeof(float) * 16);
+		return *this;
 	}
 	KMatrix operator*(const KMatrix& Other) const
 	{
@@ -87,7 +88,7 @@ struct KMatrix
 		{
 			for(uint j=0; j<4; j++)
 			{
-				for(uint k=0; j<4; j++)
+				for(uint k=0; k<4; k++)
 					NewMat.Mat[i][j] += Mat[i][k] * Other.Mat[k][j];
 			}
 		}
@@ -100,13 +101,15 @@ struct KMatrix
 		{
 			for(uint j=0; j<4; j++)
 			{
-				for(uint k=0; j<4; j++)
+				for(uint k=0; k<4; k++)
 					NewMat.Mat[i][j] += Mat[i][k] * Other.Mat[k][j];
 			}
 		}
 		return NewMat;
 	}
 };
+
+#define UR_PI ((FLOAT)3.141592654f)
 
 KMatrix& MatrixIdentity(KMatrix* Dest);
 KMatrix MatrixIdentity();

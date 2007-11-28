@@ -20,6 +20,11 @@ ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
+int OldXPos;
+int OldYPos;
+float CameraYaw;
+float CameraPitch;
+float CameraDist;
 
 #if USING_GL
 void CreatePixelFormat(PIXELFORMATDESCRIPTOR& pfd)
@@ -56,6 +61,9 @@ void CreatePixelFormat(PIXELFORMATDESCRIPTOR& pfd)
 }
 #endif //USING_GL
 
+#include "d3dx9.h"
+#pragma comment(lib, "d3dx9.lib")
+
 int APIENTRY _tWinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      LPTSTR    lpCmdLine,
@@ -64,7 +72,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
- 	// TODO: Place code here.
 	MSG msg;
 
 	// Initialize global strings
@@ -100,6 +107,13 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	GThreadManager->CreateThread(RenderThread, Thread_Rendering);
 	UrRenderer* Renderer = RenderThread->GetRenderer();
 
+	OldXPos = 0;
+	OldYPos = 0;
+
+	CameraYaw = 0.0f;
+	CameraPitch = 0.0f;
+	CameraDist = 2.0f;
+
 	bool bContinue = true;
 
 	RenderCommand(Renderer, new UrClearColorCommand(KColor(75, 75, 75, 255)));
@@ -119,6 +133,12 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		}
 		if(RenderGameSync(Renderer))
 		{
+			KMatrix RotYaw;
+			KMatrix RotPitch;
+			KMatrix ZoomMat = MatrixTranslate(KVector(0.0f, 0.0f, CameraDist));
+			D3DXMatrixRotationZ((D3DXMATRIX*)&RotYaw, CameraYaw);
+			D3DXMatrixRotationX((D3DXMATRIX*)&RotPitch, CameraPitch);
+			RenderCommand(Renderer, new UrViewTransformCommand(RotYaw*RotPitch*ZoomMat));
 			RenderCommand(Renderer, new UrRenderCommand(Render_Command_FrameSync));
 		}
 	}
@@ -221,6 +241,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
+		}
+		break;
+	case WM_LBUTTONDOWN:
+	case WM_RBUTTONDOWN:
+		OldXPos = LOWORD(lParam);
+		OldYPos = HIWORD(lParam);
+		break;
+	case WM_MOUSEMOVE:
+		if(wParam & MK_LBUTTON)
+		{
+			int xPos = LOWORD(lParam);
+			int yPos = HIWORD(lParam);
+
+			CameraYaw += (UR_PI/180.0f)*(xPos - OldXPos);
+			CameraPitch -= (UR_PI/180.0f)*(yPos - OldYPos);
+
+			OldXPos = xPos;
+			OldYPos = yPos;
+		}
+		else if(wParam & MK_RBUTTON)
+		{
+			int xPos = LOWORD(lParam);
+			int yPos = HIWORD(lParam);
+
+			CameraDist += 0.1f*((xPos - OldXPos) + (yPos - OldYPos));
+
+			OldXPos = xPos;
+			OldYPos = yPos;
 		}
 		break;
 	case WM_PAINT:
