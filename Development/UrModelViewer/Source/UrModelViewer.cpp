@@ -117,8 +117,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	bool bContinue = true;
 
 	RenderCommand(Renderer, new UrClearColorCommand(KColor(75, 75, 75, 255)));
-	RenderCommand(Renderer, new UrCreateGridCommand(KColor(0, 0, 255, 255), 10, 0.5f));
-	RenderCommand(Renderer, new UrCameraProjectionCommand(1.0f, 100.0f, 1.6f, 1.6f));
+	//RenderCommand(Renderer, new UrCreateGridCommand(KColor(0, 0, 255, 255), 10, 0.5f));
+	RCCreateGrid(Renderer, KColor(0, 0, 255, 255), 10, 0.5f);
+	RCCameraProjection(Renderer, 1.0f, 100.0f, 1.6f, 1.6f);
 	// Main message loop:
 	while(bContinue)
 	{
@@ -138,7 +139,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 			KMatrix ZoomMat = MatrixTranslate(KVector(0.0f, 0.0f, CameraDist));
 			D3DXMatrixRotationZ((D3DXMATRIX*)&RotYaw, CameraYaw);
 			D3DXMatrixRotationX((D3DXMATRIX*)&RotPitch, CameraPitch);
-			RenderCommand(Renderer, new UrViewTransformCommand(RotYaw*RotPitch*ZoomMat));
+			RCViewTransform(Renderer, RotYaw*RotPitch*ZoomMat);
 			RenderCommand(Renderer, new UrRenderCommand(Render_Command_FrameSync));
 		}
 	}

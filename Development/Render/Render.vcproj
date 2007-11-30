@@ -153,6 +153,14 @@
 			<File
 				RelativePath=".\Source\UrRender.cpp"
 				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						GeneratePreprocessedFile="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\Source\UrShader.cpp"

@@ -206,6 +206,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Include\UMacro.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Include\UMath.h"
 				>
 			</File>
