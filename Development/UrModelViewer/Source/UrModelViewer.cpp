@@ -116,7 +116,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 	bool bContinue = true;
 
-	RenderCommand(Renderer, new UrClearColorCommand(KColor(75, 75, 75, 255)));
+	RCClearColor(Renderer, KColor(75, 75, 75, 255));
 	//RenderCommand(Renderer, new UrCreateGridCommand(KColor(0, 0, 255, 255), 10, 0.5f));
 	RCCreateGrid(Renderer, KColor(0, 0, 255, 255), 10, 0.5f);
 	RCCameraProjection(Renderer, 1.0f, 100.0f, 1.6f, 1.6f);
