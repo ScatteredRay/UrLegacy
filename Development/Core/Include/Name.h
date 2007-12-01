@@ -11,7 +11,7 @@ uint32_t hashlittle( const void *key, size_t length, uint32_t initval);
 void hashlittle2( const void *key, size_t length, uint32_t *pc, uint32_t *pb);
 
 const unsigned int HashSeed = 0xF48D32AB;
-const unsigned int MaxStrings = 256;
+const unsigned int MaxNames = 256;
 const unsigned int HashMask = 0xFF; // first byte, should be 256 nums
 
 class NameTable
@@ -20,8 +20,8 @@ class NameTable
 	KArray<char*> Names;
 	NameTable()
 	{
-		Names.Add(MaxStrings);
-		assert(Names.Num() == MaxStrings);
+		Names.Add(MaxNames);
+		assert(Names.Num() == MaxNames);
 		for(uint i=0; i<Names.Num(); i++)
 		{
 			Names[i] = NULL;
@@ -45,23 +45,23 @@ class Name
 public:
 	Name(const Name& Dup)
 	{
-		assert(Dup.Index < MaxStrings);
+		assert(Dup.Index < MaxNames);
 		Index = Dup.Index;
 	}
 	Name(const char* String)
 	{
 		size_t length = appStrlen(String);
-		char* StrUpr = new char[length];
+		char* StrUpr = new char[length+1];
 		appStrcpy(StrUpr, String);
 		appStrupr(StrUpr);
 		uint StartIdx = HashIndex(StrUpr, length);
 		uint SearchIdx = StartIdx;
-		assert(SearchIdx < MaxStrings);
+		assert(SearchIdx < MaxNames);
 		assert(GNames);
 
 		while(true)
 		{
-			if(SearchIdx == MaxStrings)
+			if(SearchIdx == MaxNames)
 				SearchIdx = 0;
 
 			if(GNames->Names[SearchIdx] == NULL)
@@ -93,6 +93,10 @@ public:
 	bool operator==(const Name& other) const
 	{
 		return Index == other.Index;
+	}
+	uint GetIndex()
+	{
+		return Index;
 	}
 private:
 	unsigned int HashIndex(char* String, size_t Length)

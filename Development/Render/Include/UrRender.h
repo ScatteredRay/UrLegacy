@@ -58,6 +58,8 @@ inline void RC##name(UrRenderer* Renderer COMMANDFUNCPARAMS(i, __VA_ARGS__)) \
 	RenderCommand(Renderer, new Ur##name##Command(COMMANDNEWPARAMS(i, __VA_ARGS__) 0)); \
 }
 
+#define Define_Command(name, rnd) void Ur##name##Command::Execute(UrRenderer* rnd)
+
 Declare_Command(ClearColor, 1, (KColor, ClearColor))
 Declare_Command(CreateGrid, 3, (KColor, GridColor), (int, NumGridLines), (float, GridSpacing))
 Declare_Command(CameraProjection, 4, (float, NearClip), (float, FarClip), (float, HFOV), (float, VFOV))

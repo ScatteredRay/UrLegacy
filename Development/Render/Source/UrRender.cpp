@@ -98,7 +98,7 @@ void UrRenderer::EnqueueCommand(UrRenderCommand* RenderCommand)
 
 // ClearColor
 
-void UrClearColorCommand::Execute(UrRenderer* Renderer)
+Define_Command(ClearColor, Renderer)
 {
 	Renderer->ClearColor = ClearColor;
 }
@@ -140,7 +140,7 @@ public:
 	}
 };
 
-void UrCreateGridCommand::Execute(UrRenderer* Renderer)
+Define_Command(CreateGrid, Renderer)
 {
 	UrGridModel* Model = new UrGridModel(Renderer, GridColor, NumGridLines, GridSpacing);
 	UrRenderGroup* RGroup = new UrRenderGroup(Model);
@@ -150,12 +150,12 @@ void UrCreateGridCommand::Execute(UrRenderer* Renderer)
 	Renderer->RenderGroups[Renderer->RenderGroups.Num()-1] = RGroup;
 }
 
-void UrCameraProjectionCommand::Execute(UrRenderer* Renderer)
+Define_Command(CameraProjection, Renderer)
 {
 	MatrixPerspectiveProjection(&Renderer->Projection, NearClip, FarClip, HFOV, VFOV);
 }
 
-void UrViewTransformCommand::Execute(UrRenderer* Renderer)
+Define_Command(ViewTransform, Renderer)
 {
 	Renderer->View = Transform;
 }
