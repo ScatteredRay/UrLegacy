@@ -1,6 +1,7 @@
 #ifndef _UMATH_H_
 #define _UMATH_H_
 #include "UPlatform.h"
+#include <math.h>
 
 struct KVector
 {
@@ -25,7 +26,7 @@ struct KQuat
 	{}
 	float Magnitude() const
 	{
-		return (float)sqrt(x^2+y^2+z^2+w^2);
+		return (float)sqrt(x*x+y*y+z*z+w*w);
 	}
 	void Normalize()
 	{
@@ -41,7 +42,7 @@ struct KQuat
 		y = w*O.y - x*O.z + y*O.w + z*O.x;
 		z = w*O.z + x*O.y - y*O.x + z*O.w;
 		w = w*O.w - x*O.x - y*O.y - z*O.z;
-		return this;
+		return *this;
 	}
 	KQuat operator*(const KQuat& O) const
 	{

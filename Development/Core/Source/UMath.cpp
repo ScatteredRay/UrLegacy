@@ -88,7 +88,13 @@ KMatrix MatrixPerspectiveProjection(float NearClip, float FarClip, float HFov, f
 
 KMatrix& MatrixQuatRotation(KMatrix* Dest, KQuat R)
 {
-	Dest->SetElements(	1.0f - 2.0f*R.y^2.0f - 2.0f*R.z^2.0f,	2.0f*R.x*R.y - 2.0f*R.w*R.z,	2.0f*R.x*R.z + 2.0f*R.w*R.y
+	Dest->SetElements(
+		1.0f - 2.0f*R.y*R.y - 2.0f*R.z*R.z,		2.0f*R.x*R.y - 2.0f*R.w*R.z,		2.0f*R.x*R.z + 2.0f*R.w*R.y,		0,
+		2.0f*R.x*R.y + 2.0f*R.w*R.z,			R.w*R.w-R.x*R.x+R.y*R.y-R.z*R.z,	2.0f*R.y*R.z-2.0f*R.w*R.x,			0,
+		2.0f*R.x*R.z - 2.0f*R.w*R.y,			2.0f*R.y*R.z - 2.0f*R.w*R.x,		1.0f - 2.0f*R.x*R.x - 2.0f*R.y*R.y,	0,
+		0,										0,									0,									1);
+	return *Dest;
+						
 }
 
 KMatrix MatrixQuatRotation(KQuat Rotation)
