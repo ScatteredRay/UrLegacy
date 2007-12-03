@@ -24,6 +24,20 @@ struct KQuat
 	{}
 	KQuat(float X, float Y, float Z, float W) : x(X), y(Y), z(Z), w(W)
 	{}
+	KQuat(float Pitch, float Yaw, float Roll)
+	{
+		const float SinPitch = sin(Pitch*0.5f);
+		const float CosPitch = cos(Pitch*0.5f);
+		const float SinYaw = sin(Yaw*0.5f);
+		const float CosYaw = cos(Yaw*0.5f);
+		const float SinRoll = sin(Roll*0.5f);
+		const float CosRoll = cos(Roll*0.5f);
+
+		x = SinRoll * CosPitch * CosYaw - CosRoll * SinPitch * SinYaw;
+		y = CosRoll * SinPitch * CosYaw + SinRoll * CosPitch * SinYaw;
+		z = CosRoll * CosPitch * SinYaw - SinRoll * SinPitch * CosYaw;
+		w = CosRoll * CosPitch * CosYaw + SinRoll * SinPitch * SinYaw;
+	}
 	float Magnitude() const
 	{
 		return (float)sqrt(x*x+y*y+z*z+w*w);
