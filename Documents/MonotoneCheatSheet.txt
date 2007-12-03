@@ -10,6 +10,5 @@
  Sync to a monotone server (push and pull):
  mtn sync xxx.xxx.xxx.xxx
  
- Update workspace to match database
- 
+ Update workspace to match database:
  mtn update
