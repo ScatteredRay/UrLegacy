@@ -13,6 +13,45 @@ struct KVector
 	{}
 };
 
+struct KQuat
+{
+	float x;
+	float y;
+	float z;
+	float w;
+	KQuat()  : x(0.0f), y(0.0f), z(0.0f), w(1.0f)
+	{}
+	KQuat(float X, float Y, float Z, float W) : x(X), y(Y), z(Z), w(W)
+	{}
+	float Magnitude() const
+	{
+		return (float)sqrt(x^2+y^2+z^2+w^2);
+	}
+	void Normalize()
+	{
+		float Mag = Magnitude();
+		x /= Mag;
+		y /= Mag;
+		z /= Mag;
+		w /= Mag;
+	}
+	KQuat& operator*=(const KQuat& O)
+	{
+		x = w*O.x + x*O.w + y*O.z - z*O.y;
+		y = w*O.y - x*O.z + y*O.w + z*O.x;
+		z = w*O.z + x*O.y - y*O.x + z*O.w;
+		w = w*O.w - x*O.x - y*O.y - z*O.z;
+		return this;
+	}
+	KQuat operator*(const KQuat& O) const
+	{
+		return KQuat(	w*O.x + x*O.w + y*O.z - z*O.y,
+						w*O.y - x*O.z + y*O.w + z*O.x,
+						w*O.z + x*O.y - y*O.x + z*O.w,
+						w*O.w - x*O.x - y*O.y - z*O.z);
+	}
+};
+
 struct KMatrix
 {
 	float Mat[4][4];
@@ -121,5 +160,7 @@ KMatrix& MatrixTranslate(KMatrix* Dest, KVector Delta);
 KMatrix MatrixTranslate(KVector Delta);
 KMatrix& MatrixPerspectiveProjection(KMatrix* Dest, float NearClip, float FarClip, float HFov, float VFov);
 KMatrix MatrixPerspectiveProjection(float NearClip, float FarClip, float HFov, float VFov);
+KMatrix& MatrixQuatRotation(KMatrix* Dest, KQuat Rotation);
+KMatrix MatrixQuatRotation(KQuat Rotation);
 
 #endif //UMATH_H_

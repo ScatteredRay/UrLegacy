@@ -1,0 +1,15 @@
+ Add a file named Filename.ext to the repository:
+ mtn add Filename.ext
+ 
+ Get workspace status, modified and added files:
+ mtn status
+ 
+ Checkin current changes (With a comment):
+ mtn commit -m "This is my comment!"
+ 
+ Sync to a monotone server (push and pull):
+ mtn sync xxx.xxx.xxx.xxx
+ 
+ Update workspace to match database
+ 
+ mtn update
