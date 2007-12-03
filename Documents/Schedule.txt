@@ -1,0 +1,74 @@
+Milestone 1 (January 17th):
+- Art
+	- Modeling
+		- Placeholder
+			- Ship
+			- Environment
+				- Pillars
+				- Debris
+			- Beam
+			- Missle
+			- Pickups
+	- Texture
+		- Default Texture
+- Level
+	- Test Map
+		- Layout
+- Engineering
+	- Ship
+		- Input
+			- Temp
+		- Weapons
+		- Movement
+		- Collison
+	- Basic networking
+	- Dev Console (non-UI)
+		
+Milestone 1.5 (February 3rd)
+- Engineering
+	- Refactor/Clean-up
+
+Milestone 2 (March 2nd)
+- Art
+	- Modeling
+		- Test Map
+			- Placeholder 
+				- Deco
+		- Ship Alpha
+			- Final(?) model
+	- Art
+		- Placeholder
+			- HUD
+- Sound
+	- Placeholder
+- Engineering
+	- Audio
+	- Hud
+	- Input
+		- Final
+	- Improve Occlusion
+	- Improve Collision
+
+		
+Milestone 3 (April 13th)
+- Art
+	- Model
+		- Weapons
+			- Models
+			- Beams
+			- Missles
+		- Pickups
+	- Texture
+		- Ship
+			- Final(?) Diffuse
+- Level
+	- Map 2
+		- Layout
+- Engineering
+	- Gametypes
+	- Scoring
+	- Additional Weapons
+	- Weapon mounting
+	
+Next
+	
