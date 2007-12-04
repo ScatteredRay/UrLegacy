@@ -189,6 +189,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Source\RomPlayer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source\RomShip.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Source\UInput.cpp"
 				>
 			</File>
@@ -200,6 +208,14 @@
 			>
 			<File
 				RelativePath=".\Include\RomGame.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\RomPlayer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\RomShip.h"
 				>
 			</File>
 			<File

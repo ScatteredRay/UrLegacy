@@ -4,27 +4,38 @@
 #include "UThreading.h"
 #include "UrRender.h"
 #include "UInput.h"
+#include "RomPlayer.h"
 
 #define MAX_LOADSTRING 100
 
-// Global Variables:
 HINSTANCE hInst;								// current instance
 HWND hWnd;
 char* szTitle = "Romance";					// The title bar text
 char* szWindowClass = "RomGame";			// the main window class name
 
-// Forward declarations of functions included in this code module:
-ATOM				MyRegisterClass(HINSTANCE hInstance);
-BOOL				InitInstance(HINSTANCE, int);
-LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 int OldXPos;
 int OldYPos;
 float CameraYaw;
 float CameraPitch;
 float CameraDist;
 
+//Temp Input vars
+float aForward;
+float aBackwards;
+float aLeft;
+float aRight;
+float aUp;
+float aDown;
+float aRollLeft;
+float aRollRight;
+
 UInput* GInput;
+RomPlayer* GLocalPlayer;
+
+ATOM				MyRegisterClass(HINSTANCE hInstance);
+BOOL				InitInstance(HINSTANCE, int);
+LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
 #if USING_GL
 void CreatePixelFormat(PIXELFORMATDESCRIPTOR& pfd)
@@ -78,7 +89,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	MyRegisterClass(hInstance);
 
 	KThreadManager::Initialize();
-	GInput = new UInput();
 
 	// Perform application initialization:
 	if (!InitInstance (hInstance, nCmdShow))
@@ -121,7 +131,14 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	//RenderCommand(Renderer, new UrCreateGridCommand(KColor(0, 0, 255, 255), 10, 0.5f));
 	RCCreateGrid(Renderer, KColor(0, 0, 255, 255), 10, 0.5f);
 	RCCameraProjection(Renderer, 1.0f, 100.0f, 1.6f, 1.6f);
-	// Main message loop:
+
+	GInput = new UInput();
+
+	aForward = aBackwards = aLeft = aRight = aUp = aDown = aRollLeft = aRollRight = 0.0f; //Temp awaiting better input system.
+
+	GLocalPlayer = new RomPlayer();
+	GLocalPlayer->RegisterInput(GInput);
+
 	while(bContinue)
 	{
 		while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -145,6 +162,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		}
 	}
 	RenderCommand(Renderer, new UrRenderCommand(Render_Command_Kill));
+
+	delete GLocalPlayer;
 
 #if USING_DX
 	gD3D->Release();
@@ -253,13 +272,90 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			int xPos = LOWORD(lParam);
 			int yPos = HIWORD(lParam);
 
-			GInput->SetAxisInput(Name("PlayerYaw"), (xPos - OldXPos)/1024.0f);
-			GInput->SetAxisInput(Name("PlayerPitch"), (OldYPos - yPos)/1024.0f);
+			GInput->SetAxisInput(Name("PlayerYaw"), (xPos - OldXPos)/512.0f);
+			GInput->SetAxisInput(Name("PlayerPitch"), (OldYPos - yPos)/512.0f);
 
 			OldXPos = xPos;
 			OldYPos = yPos;
 		}
 		break;
+	case WM_KEYDOWN:
+		switch(wParam)
+		{
+		case 'e':
+		case 'E':
+			aUp = 1.0f;
+			break;
+		case 'd':
+		case 'D':
+			aDown = 1.0f;
+			break;
+		case 's':
+		case 'S':
+			aLeft = 1.0f;
+			break;
+		case 'f':
+		case 'F':
+			aRight = 1.0f;
+			break;
+		case 'w':
+		case 'W':
+			aRollLeft = 1.0f;
+			break;
+		case 'r':
+		case 'R':
+			aRollRight = 1.0f;
+			break;
+		case 'a':
+		case 'A':
+			aForward = 1.0f;
+			break;
+		case 'z':
+		case 'Z':
+			aBackwards = 1.0f;
+		}
+		goto AccumulateAxis;
+	case WM_KEYUP:
+		switch(wParam)
+		{
+		case 'e':
+		case 'E':
+			aUp = 0.0f;
+			break;
+		case 'd':
+		case 'D':
+			aDown = 0.0f;
+			break;
+		case 's':
+		case 'S':
+			aLeft = 0.0f;
+			break;
+		case 'f':
+		case 'F':
+			aRight = 0.0f;
+			break;
+		case 'w':
+		case 'W':
+			aRollLeft = 0.0f;
+			break;
+		case 'r':
+		case 'R':
+			aRollRight = 0.0f;
+			break;
+		case 'a':
+		case 'A':
+			aForward = 0.0f;
+			break;
+		case 'z':
+		case 'Z':
+			aBackwards = 0.0f;
+		}
+		goto AccumulateAxis;
+	AccumulateAxis:
+		GInput->SetAxisInput(Name("PlayerRoll"), aRollRight - aRollLeft);
+		GInput->SetAxisInput(Name("PlayerThrottle"), aForward - aBackwards);
+		GInput->SetAxisInput(Name("PlayerSlide"), aRight - aLeft);
+		GInput->SetAxisInput(Name("PlayerRise"), aUp - aDown);
 	case WM_PAINT:
 		//hdc = BeginPaint(hWnd, &ps);
 		// TODO: Add any drawing code here...
