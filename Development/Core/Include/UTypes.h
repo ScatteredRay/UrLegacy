@@ -174,10 +174,46 @@ public:
 		Count += Num;
 	}
 
+	void Remove(uint index)
+	{
+		for(uint i = index; i < Count-1; i++)
+		{
+			First[i] = First[i+1];
+		}
+		Count--;
+	}
+
 	void AddItem(const T& Item)
 	{
 		Add(1);
 		First[Count] = Item; //TODO: Not working!?!?!?
+	}
+
+	bool RemoveItem(const T& Item)
+	{
+		for(uint i=0; i<Count; i++)
+		{
+			if(First[i] == Item)
+			{
+				Remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool RemoveAllItem(const T& Item)
+	{
+		bool bFoundItem = false;
+		for(uint i=0; i<Count; i++)
+		{
+			if(First[i] == Item)
+			{
+				Remove(i--);
+				bFoundItem = true;
+			}
+		}
+		return bFoundItem;
 	}
 
 	uint Num()

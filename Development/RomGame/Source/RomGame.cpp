@@ -132,12 +132,20 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	RCCreateGrid(Renderer, KColor(0, 0, 255, 255), 10, 0.5f);
 	RCCameraProjection(Renderer, 1.0f, 100.0f, 1.6f, 1.6f);
 
+	GObjectManager = new UObjectManager();
 	GInput = new UInput();
 
 	aForward = aBackwards = aLeft = aRight = aUp = aDown = aRollLeft = aRollRight = 0.0f; //Temp awaiting better input system.
 
 	GLocalPlayer = new RomPlayer();
 	GLocalPlayer->RegisterInput(GInput);
+
+	uint64 PerformanceFrequency;
+	uint64 LastFrameTime;
+	uint64 FrameTime;
+
+	QueryPerformanceFrequency((LARGE_INTEGER*)&PerformanceFrequency);
+	QueryPerformanceCounter((LARGE_INTEGER*)&LastFrameTime);
 
 	while(bContinue)
 	{
@@ -152,6 +160,14 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		}
 		if(RenderGameSync(Renderer))
 		{
+			float FrameDelta;
+			{
+				QueryPerformanceCounter((LARGE_INTEGER*)&FrameTime);
+				uint64 DeltaCounter = FrameTime - LastFrameTime;
+				FrameDelta = (float)(((double)DeltaCounter)/((double)PerformanceFrequency));
+				LastFrameTime = FrameTime;
+			}
+			GObjectManager->TickObjects(FrameDelta);
 			KMatrix RotYaw;
 			KMatrix RotPitch;
 			KMatrix ZoomMat = MatrixTranslate(KVector(0.0f, 0.0f, CameraDist));

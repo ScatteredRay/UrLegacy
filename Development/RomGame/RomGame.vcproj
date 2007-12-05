@@ -197,6 +197,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Source\UGameObject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Source\UInput.cpp"
 				>
 			</File>
