@@ -1,8 +1,10 @@
 #include "RomPlayer.h" 
+#include "RomShip.h"
 #include "UInput.h"
 
 RomPlayer::RomPlayer()
 {
+	Ship = new RomShip();
 }
 
 RomPlayer::~RomPlayer()
@@ -29,4 +31,24 @@ void RomPlayer::DeregisterInput()
 		RegisteredInputManager->ClearInputSet(1);
 		RegisteredInputManager = NULL;
 	}
+}
+
+void RomPlayer::GenerateViewMatrix(KMatrix& Mat)
+{
+	if(!Ship)
+	{
+		MatrixIdentity(&Mat);
+		return;
+	}
+}
+
+void RomPlayer::Tick(float DeltaTime)
+{
+	if(Ship)
+	{
+		Ship->Acceleration.x += PlayerInput.AxisForward * Ship->ShipThrust.x;
+		Ship->Acceleration.y += PlayerInput.AxisSlide * Ship->ShipThrust.y;
+		Ship->Acceleration.x += PlayerInput.AxisRise * Ship->ShipThrust.z;
+	}
+
 }
