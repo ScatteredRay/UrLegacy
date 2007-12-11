@@ -12,6 +12,22 @@ struct KVector
 	{}
 	KVector() : x(0.0f), y(0.0f), z(0.0f)
 	{}
+	KVector operator*(KVector& Mul) const
+	{
+		return KVector(x*Mul.x, y*Mul.y, z*Mul.z);
+	}
+	KVector operator*(float Mul) const
+	{
+		return KVector(x*Mul, y*Mul, z*Mul);
+	}
+	KVector& operator+=(KVector& Add)
+	{
+		x += Add.x;
+		y += Add.y;
+		z += Add.z;
+
+		return *this;
+	}
 };
 
 struct KQuat

@@ -20,7 +20,7 @@ class UGameObject
 public:
 	UGameObject();
 	~UGameObject();
-	void Tick(float DeltaTime){};
+	virtual void Tick(float DeltaTime){};
 };
 
 class UMovableObject : public UGameObject

@@ -186,7 +186,7 @@ public:
 	void AddItem(const T& Item)
 	{
 		Add(1);
-		First[Count] = Item; //TODO: Not working!?!?!?
+		First[Count-1] = Item; //TODO: Not working!?!?!?
 	}
 
 	bool RemoveItem(const T& Item)

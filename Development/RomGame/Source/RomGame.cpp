@@ -168,12 +168,12 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 				LastFrameTime = FrameTime;
 			}
 			GObjectManager->TickObjects(FrameDelta);
-			KMatrix RotYaw;
-			KMatrix RotPitch;
+
+			KMatrix ViewMatrix;
 			KMatrix ZoomMat = MatrixTranslate(KVector(0.0f, 0.0f, CameraDist));
-			D3DXMatrixRotationZ((D3DXMATRIX*)&RotYaw, CameraYaw);
-			D3DXMatrixRotationX((D3DXMATRIX*)&RotPitch, CameraPitch);
-			RCViewTransform(Renderer, RotYaw*RotPitch*ZoomMat);
+			GLocalPlayer->GenerateViewMatrix(&ViewMatrix);
+			RCViewTransform(Renderer, ZoomMat*ViewMatrix);
+
 			RenderCommand(Renderer, new UrRenderCommand(Render_Command_FrameSync));
 		}
 	}
