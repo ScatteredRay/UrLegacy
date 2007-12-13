@@ -6,10 +6,10 @@
 class RomShip : public UMovableObject
 {
 public:
-	KVector Acceleration;
-	KVector Velocity;
-	KQuat DeltaRot;
-	KVector ShipThrust;
+	Vector3 Acceleration;
+	Vector3 Velocity;
+	Quat DeltaRot;
+	Vector3 ShipThrust;
 	RomShip();
 	void Tick(float DeltaTime);
 	virtual void InitDefaults();

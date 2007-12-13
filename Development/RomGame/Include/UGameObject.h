@@ -26,8 +26,8 @@ public:
 class UMovableObject : public UGameObject
 {
 public:
-	KVector Location;
-	KQuat Rotation;
+	Vector3 Location;
+	Quat Rotation;
 };
 
 #endif //_UGAMEOBJECT_H_

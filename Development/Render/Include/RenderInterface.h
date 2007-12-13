@@ -1,6 +1,7 @@
 #ifndef _RENDERINTERFACE_H_
 #define _RENDERINTERFACE_H_
 #include "UTypes.h"
+#include "UMath.h"
 
 #define USING_DX 1
 #define USING_GL 0
@@ -211,7 +212,7 @@ void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO);
 void RIDrawPrimitive(HRenderDevice Dev, uint DrawType, uint StartVertex, uint PrimitiveCount);
 void RIDeleteVertexBuffer(HRenderDevice Dev, HVertexBuffer VBO);
 void RISetColor(HRenderDevice Dev, KColor& Color);
-void RISetMatrix(HRenderDevice Dev, uint TransformState, struct KMatrix& Transform);
+void RISetMatrix(HRenderDevice Dev, uint TransformState, Matrix4& Transform);
 #if USING_GL
 void initUrsaGL();
 #endif //USING_GL

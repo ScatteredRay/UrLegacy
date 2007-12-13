@@ -44,8 +44,8 @@ void UrRenderer::Loop()
 	initUrsaGL();
 #endif //USING_GL
 	ClearColor = KColor(0, 0, 0, 0);
-	MatrixIdentity(&View);
-	MatrixIdentity(&Projection);
+	View = Matrix4::identity();
+	Projection = Matrix4::identity();
 	
 	while(bContinue)
 	{
@@ -152,7 +152,7 @@ Define_Command(CreateGrid, Renderer)
 
 Define_Command(CameraProjection, Renderer)
 {
-	MatrixPerspectiveProjection(&Renderer->Projection, NearClip, FarClip, HFOV, VFOV);
+	Renderer->Projection = Matrix4::perspective(HFOV, AspectRatio, NearClip, FarClip);
 }
 
 Define_Command(ViewTransform, Renderer)

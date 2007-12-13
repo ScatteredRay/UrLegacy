@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\Include;..\Core\Include;..\Game\Include;..\..\External\Include\;..\..\..\DirectX\Include\;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\Foundation\include\&quot;;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\Physics\include\&quot;;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\NxCharacter\include\&quot;;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\Cooking\include\&quot;"
+				AdditionalIncludeDirectories=".\Include;..\Core\Include;..\Game\Include;..\..\External\Include\;..\..\..\DirectX\Include\;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\Foundation\include\&quot;;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\Physics\include\&quot;;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\NxCharacter\include\&quot;;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\Cooking\include\&quot;;..\..\External\vectormathlibrary\include\vectormath\cpp"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -123,7 +123,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".\Include;..\Core\Include;..\Game\Include;..\..\External\Include\;..\..\..\DirectX\Include\;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\Foundation\include\&quot;;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\Physics\include\&quot;;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\NxCharacter\include\&quot;;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\Cooking\include\&quot;"
+				AdditionalIncludeDirectories=".\Include;..\Core\Include;..\Game\Include;..\..\External\Include\;..\..\..\DirectX\Include\;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\Foundation\include\&quot;;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\Physics\include\&quot;;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\NxCharacter\include\&quot;;&quot;..\..\..\AGEIA\PhysX SDK\v2.4.4\SDKs\Cooking\include\&quot;;..\..\External\vectormathlibrary\include\vectormath\cpp"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"

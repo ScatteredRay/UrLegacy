@@ -62,8 +62,8 @@ inline void RC##name(UrRenderer* Renderer COMMANDFUNCPARAMS(i, __VA_ARGS__)) \
 
 Declare_Command(ClearColor, 1, (KColor, ClearColor))
 Declare_Command(CreateGrid, 3, (KColor, GridColor), (int, NumGridLines), (float, GridSpacing))
-Declare_Command(CameraProjection, 4, (float, NearClip), (float, FarClip), (float, HFOV), (float, VFOV))
-Declare_Command(ViewTransform, 1, (KMatrix, Transform))
+Declare_Command(CameraProjection, 4, (float, NearClip), (float, FarClip), (float, HFOV), (float, AspectRatio))
+Declare_Command(ViewTransform, 1, (Matrix4, Transform))
 
 class UrRenderThread : public KThreadJob
 {

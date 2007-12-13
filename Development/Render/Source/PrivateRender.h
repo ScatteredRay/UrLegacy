@@ -16,8 +16,8 @@ public:
 	KIQueue<UrRenderCommand*> CommandQueue;
 	KIInt GameSync;
 	KColor ClearColor;
-	KMatrix View;
-	KMatrix Projection;
+	Matrix4 View;
+	Matrix4 Projection;
 	KArray<UrRenderGroup*> RenderGroups;
 public:
 	UrRenderer(HWindowContext Win) : WindowContext(Win), GameSync(0), RenderGroups()

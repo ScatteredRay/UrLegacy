@@ -112,14 +112,14 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 	CameraYaw = 0.0f;
 	CameraPitch = 0.0f;
-	CameraDist = 2.0f;
+	CameraDist = 1.0f;
 
 	bool bContinue = true;
 
 	RCClearColor(Renderer, KColor(75, 75, 75, 255));
 	//RenderCommand(Renderer, new UrCreateGridCommand(KColor(0, 0, 255, 255), 10, 0.5f));
 	RCCreateGrid(Renderer, KColor(0, 0, 255, 255), 10, 0.5f);
-	RCCameraProjection(Renderer, 1.0f, 100.0f, 1.6f, 1.6f);
+	RCCameraProjection(Renderer, 0.1f, 100.0f, 1.6f, 1.0f);
 	// Main message loop:
 	while(bContinue)
 	{
@@ -134,12 +134,12 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		}
 		if(RenderGameSync(Renderer))
 		{
-			KMatrix RotYaw;
-			KMatrix RotPitch;
-			KMatrix ZoomMat = MatrixTranslate(KVector(0.0f, 0.0f, CameraDist));
-			D3DXMatrixRotationZ((D3DXMATRIX*)&RotYaw, CameraYaw);
-			D3DXMatrixRotationX((D3DXMATRIX*)&RotPitch, CameraPitch);
-			RCViewTransform(Renderer, RotYaw*RotPitch*ZoomMat);
+			Matrix4 RotYaw;
+			Matrix4 RotPitch;
+			Matrix4 ZoomMat = Matrix4::translation(Vector3(0.0f, 0.0f, -CameraDist));
+			RotYaw = Matrix4::rotationZ(CameraYaw);
+			RotPitch = Matrix4::rotationX(CameraPitch);
+			RCViewTransform(Renderer, ZoomMat*RotPitch*RotYaw);
 			RenderCommand(Renderer, new UrRenderCommand(Render_Command_FrameSync));
 		}
 	}
@@ -267,6 +267,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			int yPos = HIWORD(lParam);
 
 			CameraDist += 0.1f*((xPos - OldXPos) + (yPos - OldYPos));
+			if(CameraDist < 0)
+				CameraDist = 0;
 
 			OldXPos = xPos;
 			OldYPos = yPos;

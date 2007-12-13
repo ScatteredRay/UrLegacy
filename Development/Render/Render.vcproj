@@ -39,7 +39,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories=".\Include\;..\Core\Include\"
+				AdditionalIncludeDirectories=".\Include\;..\Core\Include\;..\..\External\vectormathlibrary\include\vectormath\cpp"
 				RuntimeLibrary="3"
 				ProgramDataBaseFileName="$(OutDir)\vc80.pdb"
 				WarningLevel="3"
@@ -98,7 +98,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories=".\Include\;..\Core\Include\"
+				AdditionalIncludeDirectories=".\Include\;..\Core\Include\;..\..\External\vectormathlibrary\include\vectormath\cpp"
 				RuntimeLibrary="2"
 				ProgramDataBaseFileName="$(OutDir)\vc80.pdb"
 				WarningLevel="3"

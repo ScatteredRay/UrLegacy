@@ -23,7 +23,7 @@ public:
 	~RomPlayer();
 	void RegisterInput(UInput* InputManager);
 	void DeregisterInput();
-	void GenerateViewMatrix(KMatrix* Mat);
+	void GenerateViewMatrix(Matrix4* Mat);
 	void Tick(float DeltaTime);
 };
 

@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\Include\;..\Core\Include\"
+				AdditionalIncludeDirectories=".\Include\;..\Core\Include\;..\..\External\vectormathlibrary\include\vectormath\cpp"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

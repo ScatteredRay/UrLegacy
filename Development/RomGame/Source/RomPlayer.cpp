@@ -33,30 +33,28 @@ void RomPlayer::DeregisterInput()
 	}
 }
 
-void RomPlayer::GenerateViewMatrix(KMatrix* Mat)
+void RomPlayer::GenerateViewMatrix(Matrix4* Mat)
 {
 	if(Ship)
 	{	
-		KMatrix MatRotate;
-		KMatrix MatTranslate;
-		Ship->Rotation.Normalize();
-		MatrixQuatRotation(&MatRotate, Ship->Rotation);
-		MatrixTranslate(&MatTranslate, Ship->Location);
-		*Mat = MatTranslate * MatRotate;
+		
+		Matrix4 MatRotate = Matrix4::rotation(Ship->Rotation);
+		Matrix4 MatTranslate = Matrix4::translation(Ship->Location);
+		*Mat = MatRotate * MatTranslate;
 		return;
 	}
-	MatrixIdentity(Mat);
+	*Mat = Matrix4::identity();
 }
 
 void RomPlayer::Tick(float DeltaTime)
 {
 	if(Ship)
 	{
-		Ship->Acceleration.x = PlayerInput.AxisForward * Ship->ShipThrust.x;
-		Ship->Acceleration.y = PlayerInput.AxisSlide * Ship->ShipThrust.y;
-		Ship->Acceleration.z = PlayerInput.AxisRise * Ship->ShipThrust.z;
+		Ship->Acceleration.setX(PlayerInput.AxisForward * Ship->ShipThrust.getX());
+		Ship->Acceleration.setY(PlayerInput.AxisSlide * Ship->ShipThrust.getY());
+		Ship->Acceleration.setZ(PlayerInput.AxisRise * Ship->ShipThrust.getZ());
 
-		Ship->DeltaRot = KQuat(PlayerInput.AxisPitch, PlayerInput.AxisYaw, PlayerInput.AxisRoll);
+		Ship->DeltaRot = Quat::rotationX(PlayerInput.AxisRoll) * Quat::rotationY(PlayerInput.AxisPitch) * Quat::rotationZ(PlayerInput.AxisYaw);
 		PlayerInput.AxisPitch = 0.0f;
 		PlayerInput.AxisYaw = 0.0f;
 	}

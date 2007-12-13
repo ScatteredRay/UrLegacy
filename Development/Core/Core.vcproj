@@ -41,7 +41,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".\Include\"
+				AdditionalIncludeDirectories=".\Include\;..\..\External\vectormathlibrary\include\vectormath\cpp"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -105,7 +105,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories=".\Include\"
+				AdditionalIncludeDirectories=".\Include\;..\..\External\vectormathlibrary\include\vectormath\cpp"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;DEBUG"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"

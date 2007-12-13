@@ -8,14 +8,16 @@ RomShip::RomShip()
 void RomShip::Tick(float DeltaTime)
 {
 	Velocity += Acceleration * DeltaTime;
-	if(Acceleration.IsZero())
-		Velocity = KVector();
+	if(lengthSqr(Acceleration) < 0.01f)
+		Velocity = Vector3(0.0f, 0.0f, 0.0f);
 	Location += Velocity * DeltaTime;
-	Rotation *= DeltaRot;
-	DeltaRot = KQuat();
+	Rotation = DeltaRot * Rotation;
+	DeltaRot = Quat::identity();
 }
 
 void RomShip::InitDefaults()
 {
-	ShipThrust = KVector(1.0f, 1.0f, 1.0f);
+	ShipThrust = Vector3(1.0f, 1.0f, 1.0f);
+	Rotation = Quat::identity();
+	DeltaRot = Quat::identity();
 }

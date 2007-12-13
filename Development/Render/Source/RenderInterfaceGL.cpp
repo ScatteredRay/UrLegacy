@@ -83,7 +83,7 @@ void RISetColor(HRenderDevice Dev, KColor& Color)
 	glColor3f(Color.Redf(), Color.Greenf(), Color.Bluef());
 }
 
-void RISetMatrix(HRenderDevice Dev, uint TransformState, KMatrix& Transform)
+void RISetMatrix(HRenderDevice Dev, uint TransformState, Matrix4& Transform)
 {
 
 }
