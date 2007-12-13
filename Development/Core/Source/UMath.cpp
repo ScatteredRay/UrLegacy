@@ -1,6 +1,13 @@
 #include "UMath.h"
 #include "Math.h"
 
+KVector KQuat::RotateVector(const KVector& Vect)
+{
+	KMatrix MatRotate;
+	MatrixQuatRotation(&MatRotate, *this);
+	return MatRotate*Vect;
+}
+
 KMatrix& MatrixIdentity(KMatrix* Dest)
 {
 	Dest->SetElements(	1.0f, 0.0f, 0.0f, 0.0f,

@@ -37,7 +37,12 @@ void RomPlayer::GenerateViewMatrix(KMatrix* Mat)
 {
 	if(Ship)
 	{	
-		MatrixTranslate(Mat, Ship->Location);
+		KMatrix MatRotate;
+		KMatrix MatTranslate;
+		Ship->Rotation.Normalize();
+		MatrixQuatRotation(&MatRotate, Ship->Rotation);
+		MatrixTranslate(&MatTranslate, Ship->Location);
+		*Mat = MatTranslate * MatRotate;
 		return;
 	}
 	MatrixIdentity(Mat);
@@ -49,7 +54,11 @@ void RomPlayer::Tick(float DeltaTime)
 	{
 		Ship->Acceleration.x = PlayerInput.AxisForward * Ship->ShipThrust.x;
 		Ship->Acceleration.y = PlayerInput.AxisSlide * Ship->ShipThrust.y;
-		Ship->Acceleration.x = PlayerInput.AxisRise * Ship->ShipThrust.z;
+		Ship->Acceleration.z = PlayerInput.AxisRise * Ship->ShipThrust.z;
+
+		Ship->DeltaRot = KQuat(PlayerInput.AxisPitch, PlayerInput.AxisYaw, PlayerInput.AxisRoll);
+		PlayerInput.AxisPitch = 0.0f;
+		PlayerInput.AxisYaw = 0.0f;
 	}
 
 }

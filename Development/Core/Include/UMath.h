@@ -28,6 +28,38 @@ struct KVector
 
 		return *this;
 	}
+	float operator[](uint idx) const
+	{
+		switch(idx)
+		{
+		case 0:
+			return x;
+		case 1:
+			return y;
+		case 2:
+			return z;
+		default:
+			assert(false);
+		}
+	}
+	float& operator[](uint idx)
+	{
+		switch(idx)
+		{
+		case 0:
+			return x;
+		case 1:
+			return y;
+		case 2:
+			return z;
+		default:
+			assert(false);
+		}
+	}
+	bool IsZero()
+	{
+		return x==0.0f && y==0.0f && z==0.0f;
+	}
 };
 
 struct KQuat
@@ -81,6 +113,7 @@ struct KQuat
 						w*O.z + x*O.y - y*O.x + z*O.w,
 						w*O.w - x*O.x - y*O.y - z*O.z);
 	}
+	KVector RotateVector(const KVector& Vect);
 };
 
 struct KMatrix
@@ -176,6 +209,28 @@ struct KMatrix
 			}
 		}
 		return NewMat;
+	}
+	KVector operator*(const KVector& InVect) const
+	{
+		float Vect[4];
+		float NewVect[4];
+
+		for(uint i=0; i<3; i++)
+			Vect[i] = InVect[i];
+		Vect[4] = 1.0f;
+		for(uint i=0; i<4; i++)
+			NewVect[i] = 0.0f;
+
+		for(uint i=0; i<4; i++)
+		{
+			for(uint k=0; k<4; k++)
+				NewVect[i] += Mat[i][k] * Vect[k];
+		}
+
+		KVector RetVect;
+		for(uint i=0; i<3; i++)
+			RetVect[i] = NewVect[i]/NewVect[3];
+		return RetVect;
 	}
 };
 

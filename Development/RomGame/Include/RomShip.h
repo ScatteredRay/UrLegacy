@@ -8,7 +8,7 @@ class RomShip : public UMovableObject
 public:
 	KVector Acceleration;
 	KVector Velocity;
-	KVector DeltaRot;
+	KQuat DeltaRot;
 	KVector ShipThrust;
 	RomShip();
 	void Tick(float DeltaTime);

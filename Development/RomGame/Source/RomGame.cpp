@@ -13,8 +13,12 @@ HWND hWnd;
 char* szTitle = "Romance";					// The title bar text
 char* szWindowClass = "RomGame";			// the main window class name
 
+bool bWindowFocus;
+bool bInitInput;
 int OldXPos;
 int OldYPos;
+int CenterXPos;
+int CenterYPos;
 float CameraYaw;
 float CameraPitch;
 float CameraDist;
@@ -84,6 +88,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	MSG msg;
+	bWindowFocus = false;
+	bInitInput = false;
 
 	// Initialize global strings
 	MyRegisterClass(hInstance);
@@ -130,7 +136,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	RCClearColor(Renderer, KColor(75, 75, 75, 255));
 	//RenderCommand(Renderer, new UrCreateGridCommand(KColor(0, 0, 255, 255), 10, 0.5f));
 	RCCreateGrid(Renderer, KColor(0, 0, 255, 255), 10, 0.5f);
-	RCCameraProjection(Renderer, 1.0f, 100.0f, 1.6f, 1.6f);
+	RCCameraProjection(Renderer, 1.0f, 100.0f, UR_PI/2.0f, UR_PI/2.0f);
 
 	GObjectManager = new UObjectManager();
 	GInput = new UInput();
@@ -158,6 +164,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 			else if(msg.message == WM_PAINT)
 				break;
 		}
+		if(bWindowFocus)
+			SetCursorPos(CenterXPos, CenterYPos);
 		if(RenderGameSync(Renderer))
 		{
 			float FrameDelta;
@@ -172,7 +180,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 			KMatrix ViewMatrix;
 			KMatrix ZoomMat = MatrixTranslate(KVector(0.0f, 0.0f, CameraDist));
 			GLocalPlayer->GenerateViewMatrix(&ViewMatrix);
-			RCViewTransform(Renderer, ZoomMat*ViewMatrix);
+			RCViewTransform(Renderer, ViewMatrix);
 
 			RenderCommand(Renderer, new UrRenderCommand(Render_Command_FrameSync));
 		}
@@ -280,6 +288,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
 		break;
+	case WM_SETFOCUS:
+		bWindowFocus = true;
+		ShowCursor(false);
+	case WM_MOVE:
+		RECT WinRect;
+		GetWindowRect(hWnd, &WinRect);
+		CenterYPos = (WinRect.top + WinRect.bottom)/2;
+		CenterXPos = (WinRect.left + WinRect.right)/2;
+		break;
+	case WM_KILLFOCUS:
+		bWindowFocus = false;
+		ShowCursor(true);
+		bInitInput = false;
+		break;
 	case WM_LBUTTONDOWN:
 	case WM_RBUTTONDOWN:
 		break;
@@ -288,8 +310,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			int xPos = LOWORD(lParam);
 			int yPos = HIWORD(lParam);
 
-			GInput->SetAxisInput(Name("PlayerYaw"), (xPos - OldXPos)/512.0f);
-			GInput->SetAxisInput(Name("PlayerPitch"), (OldYPos - yPos)/512.0f);
+			if(bInitInput)
+			{
+				GInput->SetAxisInput(Name("PlayerYaw"), (xPos - OldXPos)/512.0f);
+				GInput->SetAxisInput(Name("PlayerPitch"), (OldYPos - yPos)/512.0f);
+			}
+			else
+				bInitInput = true;
 
 			OldXPos = xPos;
 			OldYPos = yPos;
@@ -368,7 +395,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		goto AccumulateAxis;
 	AccumulateAxis:
-		GInput->SetAxisInput(Name("PlayerRoll"), aRollRight - aRollLeft);
+		GInput->SetAxisInput(Name("PlayerRoll"), (aRollRight - aRollLeft)*0.05f);
 		GInput->SetAxisInput(Name("PlayerThrottle"), aForward - aBackwards);
 		GInput->SetAxisInput(Name("PlayerSlide"), aRight - aLeft);
 		GInput->SetAxisInput(Name("PlayerRise"), aUp - aDown);
