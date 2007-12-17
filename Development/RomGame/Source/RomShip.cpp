@@ -11,7 +11,7 @@ void RomShip::Tick(float DeltaTime)
 	if(lengthSqr(Acceleration) < 0.01f)
 		Velocity = Vector3(0.0f, 0.0f, 0.0f);
 	Location += Velocity * DeltaTime;
-	Rotation = DeltaRot * Rotation;
+	Rotation *= DeltaRot;
 	DeltaRot = Quat::identity();
 }
 

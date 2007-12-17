@@ -37,8 +37,7 @@ void RomPlayer::GenerateViewMatrix(Matrix4* Mat)
 {
 	if(Ship)
 	{	
-		
-		Matrix4 MatRotate = Matrix4::rotation(Ship->Rotation);
+		Matrix4 MatRotate = inverse(Matrix4::rotation(Ship->Rotation));
 		Matrix4 MatTranslate = Matrix4::translation(Ship->Location);
 		*Mat = MatRotate * MatTranslate;
 		return;
@@ -50,11 +49,14 @@ void RomPlayer::Tick(float DeltaTime)
 {
 	if(Ship)
 	{
-		Ship->Acceleration.setX(PlayerInput.AxisForward * Ship->ShipThrust.getX());
-		Ship->Acceleration.setY(PlayerInput.AxisSlide * Ship->ShipThrust.getY());
-		Ship->Acceleration.setZ(PlayerInput.AxisRise * Ship->ShipThrust.getZ());
+		Vector3 ShipThrust = Vector3(	(PlayerInput.AxisForward * Ship->ShipThrust.getX()),
+										(PlayerInput.AxisSlide * Ship->ShipThrust.getY()),
+										(PlayerInput.AxisRise * Ship->ShipThrust.getZ()));
 
-		Ship->DeltaRot = Quat::rotationX(PlayerInput.AxisRoll) * Quat::rotationY(PlayerInput.AxisPitch) * Quat::rotationZ(PlayerInput.AxisYaw);
+
+		Ship->Acceleration = rotate(Ship->Rotation, ShipThrust);
+
+		Ship->DeltaRot = Quat::rotationY(PlayerInput.AxisPitch) * Quat::rotationZ(PlayerInput.AxisYaw) * Quat::rotationX(PlayerInput.AxisRoll);
 		PlayerInput.AxisPitch = 0.0f;
 		PlayerInput.AxisYaw = 0.0f;
 	}

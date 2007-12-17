@@ -178,9 +178,13 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 			GObjectManager->TickObjects(FrameDelta);
 
 			Matrix4 ViewMatrix;
-			Matrix4 ZoomMat = Matrix4::translation(Vector3(0.0f, 0.0f, CameraDist));
+			// Converts the scene from an Y up environment into a Z up environment;
+			Matrix4 CoordMat = Matrix4(	Vector4(0.0f, 0.0f, 1.0f, 0.0f),
+										Vector4(-1.0f, 0.0f, 0.0f, 0.0f),
+										Vector4(0.0f, -1.0f, 0.0f, 0.0f),
+										Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 			GLocalPlayer->GenerateViewMatrix(&ViewMatrix);
-			RCViewTransform(Renderer, ViewMatrix);
+			RCViewTransform(Renderer, CoordMat*ViewMatrix);
 
 			RenderCommand(Renderer, new UrRenderCommand(Render_Command_FrameSync));
 		}
@@ -312,8 +316,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			if(bInitInput)
 			{
-				GInput->SetAxisInput(Name("PlayerYaw"), (xPos - OldXPos)/512.0f);
-				GInput->SetAxisInput(Name("PlayerPitch"), (OldYPos - yPos)/512.0f);
+				GInput->SetAxisInput(Name("PlayerYaw"), (xPos - OldXPos)/256.0f);
+				GInput->SetAxisInput(Name("PlayerPitch"), (yPos - OldYPos)/256.0f);
 			}
 			else
 				bInitInput = true;
@@ -325,6 +329,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		switch(wParam)
 		{
+		case VK_ESCAPE:
+			PostQuitMessage(0);
+			break;
 		case 'e':
 		case 'E':
 			aUp = 1.0f;
@@ -395,7 +402,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		goto AccumulateAxis;
 	AccumulateAxis:
-		GInput->SetAxisInput(Name("PlayerRoll"), (aRollRight - aRollLeft)*0.05f);
+		GInput->SetAxisInput(Name("PlayerRoll"), (aRollLeft - aRollRight)*0.05f);
 		GInput->SetAxisInput(Name("PlayerThrottle"), aForward - aBackwards);
 		GInput->SetAxisInput(Name("PlayerSlide"), aRight - aLeft);
 		GInput->SetAxisInput(Name("PlayerRise"), aUp - aDown);
