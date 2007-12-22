@@ -40,6 +40,8 @@
 
 #define ASSERT(cond) assert(cond)
 
+#define WITH_PROFILER 1
+
 //#endif //WINDOWS
 
 #endif //_CORE_H_

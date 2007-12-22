@@ -176,6 +176,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Source\UProfile.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Source\UThreading.cpp"
 				>
 			</File>
@@ -227,6 +231,10 @@
 			</File>
 			<File
 				RelativePath=".\Include\UPlatform.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\UProfile.h"
 				>
 			</File>
 			<File

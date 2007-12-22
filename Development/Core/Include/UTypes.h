@@ -176,6 +176,14 @@ public:
 
 	void Remove(uint index)
 	{
+		// The theory is that any array that has been big, is likely to get that way again, so we just keep the memory laying around,
+		// we also don't incur the realloc cost on a free, which is nice.
+
+		if(KTypeInfo<T>::NeedsDestructor)
+		{
+			First[index].~T();
+		}
+
 		for(uint i = index; i < Count-1; i++)
 		{
 			First[i] = First[i+1];
