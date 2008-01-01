@@ -178,10 +178,23 @@ char* DirIterator::FileName()
 	return DirData.cFileName;
 }
 
-File* File::OpenFile(const char* Path)
+TextFile* TextFile::OpenFile(const char* Path)
 {
-	File* F = new File();
-	F->_file = fopen(Path, "r"); // just doing reading of text for now.
+	TextFile* F = new TextFile();
+	F->_file = fopen(Path, "r");
+	if(F->_file == NULL)
+	{
+		delete F;
+		return NULL;
+	}
+	else
+		return F;
+}
+
+BinaryFile* BinaryFile::OpenFile(const char* Path)
+{
+	BinaryFile* F = new BinaryFile();
+	F->_file = fopen(Path, "rb");
 	if(F->_file == NULL)
 	{
 		delete F;
@@ -200,7 +213,15 @@ File::~File()
 	fclose(_file);
 }
 
-size_t File::FileLength()
+TextFile::TextFile()
+{
+}
+
+TextFile::~TextFile()
+{
+}
+
+size_t TextFile::FileLength()
 {
 	// No real length query, so we need to seek to the end, and get pos.
 	long FileLen;
@@ -211,7 +232,7 @@ size_t File::FileLength()
 	return FileLen;
 }
 
-char* File::ReadAll()
+char* TextFile::ReadAll()
 {
 	size_t FileLen = FileLength();
 	char* ReadBuffer = new char[FileLen];
@@ -219,7 +240,7 @@ char* File::ReadAll()
 	return ReadBuffer;
 }
 
-char* File::ReadLine()
+char* TextFile::ReadLine()
 {
 	char* ReadBuffer = new char[MaxLineLen];
 	char* out = fgets(ReadBuffer, MaxLineLen, _file);
@@ -230,10 +251,18 @@ char* File::ReadLine()
 	return NULL;
 }
 
-char* File::Read()
+char* TextFile::Read()
 {
 	assert(false);
 	return NULL;
+}
+
+BinaryFile::BinaryFile()
+{
+}
+
+BinaryFile::~BinaryFile()
+{
 }
 
 char* GetSubDirPath(const char* Dir, const char* SubDir, const char* Ext)

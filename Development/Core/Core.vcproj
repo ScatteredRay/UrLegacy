@@ -168,6 +168,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Source\UPackage.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Source\UParse.cpp"
 				>
 			</File>
@@ -223,6 +227,10 @@
 			</File>
 			<File
 				RelativePath=".\Include\UObject.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\UPackage.h"
 				>
 			</File>
 			<File

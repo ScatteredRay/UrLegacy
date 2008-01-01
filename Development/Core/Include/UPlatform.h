@@ -47,15 +47,37 @@ const size_t MaxLineLen = 255; // it's how fgets works, we'll see if we can remo
 
 class File
 {
+	//friend class TextFile;
+	//friend class BinaryFile;
+protected:
 	FILE* _file;
 	File();
 public:
-	static File* OpenFile(const char* Path);
 	~File();
 	size_t FileLength();
 	char* ReadAll();
 	char* Read();
 	char* ReadLine();
+};
+
+class TextFile : public File
+{
+	TextFile();
+public:
+	static class TextFile* OpenFile(const char* Path);
+	~TextFile();
+	size_t FileLength();
+	char* ReadAll();
+	char* Read();
+	char* ReadLine();
+};
+
+class BinaryFile : public File
+{
+	BinaryFile();
+public:
+	static class BinaryFile* OpenFile(const char* Path);
+	~BinaryFile();
 };
 
 char* GetSubDirPath(const char* Dir, const char* SubDir, const char* Ext);

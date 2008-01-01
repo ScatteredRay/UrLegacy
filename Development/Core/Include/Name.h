@@ -94,6 +94,10 @@ public:
 	{
 		return Index == other.Index;
 	}
+	operator const char*()const
+	{
+		return GNames->Names[Index];
+	}
 	uint GetIndex()
 	{
 		return Index;

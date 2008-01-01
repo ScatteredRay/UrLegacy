@@ -189,7 +189,7 @@ bool ParseBuildAsset(char** ScriptChar, BuildState* BState)
 
 void RunBuildScript(const char* Filename, BuildState* BState)
 {
-	File* ScriptFile = File::OpenFile(Filename);
+	TextFile* ScriptFile = TextFile::OpenFile(Filename);
 	char* ScriptBuffer = ScriptFile->ReadAll();
 	char* ScriptChar = ScriptBuffer;
 	delete ScriptFile;

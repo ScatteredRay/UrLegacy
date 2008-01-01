@@ -40,7 +40,7 @@
 
 #define ASSERT(cond) assert(cond)
 
-#define WITH_PROFILER 1
+#define WITH_PROFILER 0
 
 //#endif //WINDOWS
 
