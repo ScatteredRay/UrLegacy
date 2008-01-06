@@ -191,10 +191,19 @@ TextFile* TextFile::OpenFile(const char* Path)
 		return F;
 }
 
-BinaryFile* BinaryFile::OpenFile(const char* Path)
+BinaryFile* BinaryFile::OpenFile(const char* Path, bool bForWriting)
 {
 	BinaryFile* F = new BinaryFile();
-	F->_file = fopen(Path, "rb");
+	if(bForWriting)
+	{
+		F->_file = fopen(Path, "wb");
+		F->bReadOnly = false;
+	}
+	else
+	{
+		F->_file = fopen(Path, "rb");
+		F->bReadOnly = true;
+	}
 	if(F->_file == NULL)
 	{
 		delete F;
@@ -263,6 +272,37 @@ BinaryFile::BinaryFile()
 
 BinaryFile::~BinaryFile()
 {
+}
+
+void* BinaryFile::Read(void* Dest, psize Length)
+{
+	fread(Dest, 1, Length, _file);
+	return Dest;
+}
+
+void BinaryFile::Write(void* Src, psize Length)
+{
+	fwrite(Src, 1, Length, _file);
+}
+
+void BinaryFile::SeekStart(psize Offset)
+{
+	fseek(_file, Offset, SEEK_SET);
+}
+
+void BinaryFile::SeekCurrent(psize Offset)
+{
+	fseek(_file, Offset, SEEK_CUR);
+}
+
+template<typename T>
+BinaryFile* BinaryFile::operator<<(T& Src)
+{
+	if(bReadOnly)
+		Read(&Src, sizeof(T));
+	else
+		Write(&Src, sizeof(T));
+	return this;
 }
 
 char* GetSubDirPath(const char* Dir, const char* SubDir, const char* Ext)
