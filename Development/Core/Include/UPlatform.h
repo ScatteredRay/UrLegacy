@@ -74,10 +74,17 @@ public:
 
 class BinaryFile : public File
 {
+	bool bReadOnly;
 	BinaryFile();
 public:
-	static class BinaryFile* OpenFile(const char* Path);
+	static class BinaryFile* OpenFile(const char* Path, bool bForWriting);
 	~BinaryFile();
+	void* Read(void* Dest, psize Length);
+	void Write(void* Src, psize Length);
+	void SeekStart(psize Offset);
+	void SeekCurrent(psize Offset);
+	template<typename T>
+	BinaryFile* operator <<(T& Src);
 };
 
 char* GetSubDirPath(const char* Dir, const char* SubDir, const char* Ext);
