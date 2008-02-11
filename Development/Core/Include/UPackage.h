@@ -23,10 +23,13 @@ class UPackage
 	Name PackageName;
 	bool bLoaded;
 public:
-	UPackage(Name Pkg) : PackageName(Pkg){}
+	UPackage(Name Pkg);
+	~UPackage();
 	bool Save();
 	bool Load();
 	void Serialize(PkStream& Stream);
+	void AddAsset(UAsset* Asset);
+	void RemoveAsset(UAsset* Asset);
 	Name Name()
 	{
 		return PackageName;
@@ -36,6 +39,10 @@ public:
 class UAsset
 {
 	UPackage* Package;
+public:
+	UAsset(UPackage* Owner);
+	~UAsset();
+	void Serialize(PkStream& Stream)=0;
 };
 
 class UPackageManager
@@ -43,6 +50,8 @@ class UPackageManager
 	KArray<UPackage*> Packages;
 public:
 	UPackage* FindPackage(Name Pack);
+	void AddPackage(UPackage* Pack);
+	void RemovePackage(UPackage* Pack);
 	void SaveAll();
 	void LoadList();
 	UPackage* LoadPackage(Name Pack);

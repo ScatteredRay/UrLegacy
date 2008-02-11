@@ -5,6 +5,26 @@ const char* PakDirectory = "..\\Packages\\*";
 const char* PackageExt = ".ubs";
 const uint	PackageSignature = 0xf31115ba;
 
+UPackage::UPackage(Name Pkg) : PackageName(Pkg)
+{
+	
+}
+
+UPackage::~UPackage()
+{
+
+}
+
+UPackage::AddAsset(UAsset* Asset)
+{
+	Assets.AddItem(Asset);
+}
+
+UPackage::RemoveAsset(UAsset* Asset)
+{
+	Assets.RemoveAllItem(Asset);
+}
+
 bool UPackage::Save()
 {
 	BinaryFile* PakFile = BinaryFile::OpenFile(GetSubDirPath(PakDirectory, PackageName, PackageExt), true);
@@ -38,7 +58,7 @@ void UPackage::Serialize(PkStream &Stream)
 
 	for(uint i=0; i<NumAssets; i++)
 	{
-
+		Assets[i]->Serialize(Stream);
 	}
 
 	bLoaded = true;
@@ -52,6 +72,18 @@ UPackage* UPackageManager::FindPackage(Name Pack)
 			return Packages[i];
 	}
 	return NULL;
+}
+
+UAsset::UAsset(UPackage* Owner) : Package(Owner)
+{
+	Assert(Package);
+	Package->AddAsset(this);
+}
+
+UAsset::~UAsset()
+{
+	if(Package)
+		Package->RemoveAsset(this);
 }
 
 void UPackageManager::SaveAll()
