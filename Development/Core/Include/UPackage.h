@@ -30,11 +30,33 @@ public:
 	void Serialize(PkStream& Stream);
 	void AddAsset(UAsset* Asset);
 	void RemoveAsset(UAsset* Asset);
-	Name Name()
+	Name GetName()
 	{
 		return PackageName;
 	}
 };
+
+struct AssetInitializer
+{
+	uint ID;
+	UAsset* (*Initialize)();
+	AssetInitializer(uint id, UAsset* (*initialize)()) : ID(id), Initialize(initialize) {}
+};
+
+class UAssetType
+{
+	uint AssetID;
+	static KArray<AssetInitializer*> Initializers;
+public:
+	UAssetType() : AssetID(0){}
+	UAssetType(uint ID) : AssetID(ID){}
+	UAsset* CreateAsset();
+	static UAssetType AddInitializer(AssetInitializer* Initializer);
+};
+
+#define DECLARE_INITIALIZER(num, cls) static UAsset* CreateNew##cls(){return new cls();} \
+	static UAssetType cls##Type = UAssetType::AddInitializer(new AssetInitializer(num, &CreateNew##cls)); \
+	virtual UAssetType GetType() { return cls##Type; }
 
 class UAsset
 {
@@ -42,7 +64,8 @@ class UAsset
 public:
 	UAsset(UPackage* Owner);
 	~UAsset();
-	void Serialize(PkStream& Stream)=0;
+	virtual void Serialize(PkStream& Stream)=0;
+	virtual UAssetType GetType()=0;
 };
 
 class UPackageManager
