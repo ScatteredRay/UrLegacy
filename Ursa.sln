@@ -34,6 +34,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RomGame", "Development\RomG
 		{96DAA032-BC9D-4015-80DC-B056247E8126} = {96DAA032-BC9D-4015-80DC-B056247E8126}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SurfaceTension", "Development\SurfaceTension\SurfaceTension.vcproj", "{01CA6597-A791-4A9A-802C-FDCF3A2D8513}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -64,6 +66,10 @@ Global
 		{EAF167C6-9910-4CD7-BAB4-49D3BE189196}.Debug|Win32.Build.0 = Debug|Win32
 		{EAF167C6-9910-4CD7-BAB4-49D3BE189196}.Release|Win32.ActiveCfg = Release|Win32
 		{EAF167C6-9910-4CD7-BAB4-49D3BE189196}.Release|Win32.Build.0 = Release|Win32
+		{01CA6597-A791-4A9A-802C-FDCF3A2D8513}.Debug|Win32.ActiveCfg = Debug|Win32
+		{01CA6597-A791-4A9A-802C-FDCF3A2D8513}.Debug|Win32.Build.0 = Debug|Win32
+		{01CA6597-A791-4A9A-802C-FDCF3A2D8513}.Release|Win32.ActiveCfg = Release|Win32
+		{01CA6597-A791-4A9A-802C-FDCF3A2D8513}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
