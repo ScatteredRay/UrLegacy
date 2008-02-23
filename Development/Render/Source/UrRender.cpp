@@ -135,7 +135,7 @@ public:
 	void Render(UrModelInstance* Instance)
 	{
 		RISetColor(Renderer->Device, GridColor);
-		RIBindBuffer(Renderer->Device, Buffer);
+		RIBindBuffer(Renderer->Device, Buffer, 0);
 		RIDrawPrimitive(Renderer->Device, RI_PRIMITIVE_LINES, 0, NumPrimitives);
 	}
 };
@@ -150,9 +150,54 @@ Define_Command(CreateGrid, Renderer)
 	Renderer->RenderGroups[Renderer->RenderGroups.Num()-1] = RGroup;
 }
 
+class UrParticleSystemModel : public UrModel
+{
+public:
+	UrParticleSystemModel(UrRenderer* R) : UrModel(R)
+	{
+	}
+	void Render(UrModelInstance* Instance)
+	{
+
+	}
+	void UpdateParticles(Vector4* Locations, uint Count)
+	{
+
+	}
+};
+
+Define_Command(CreateParticleSystem, Renderer)
+{
+	if(Renderer->ParticleSystems.Num() <= Slot)
+		Renderer->ParticleSystems.Add(1 + Slot - Renderer->ParticleSystems.Num());
+
+	if(Renderer->ParticleSystems[Slot] != NULL)
+		delete Renderer->ParticleSystems[Slot];
+
+	UrParticleSystemModel* PartSys = new UrParticleSystemModel(Renderer);
+	Renderer->ParticleSystems[Slot] = PartSys;
+	UrRenderGroup* RGroup = new UrRenderGroup(PartSys);
+	UrModelInstance* Instance = new UrModelInstance(PartSys);
+	RGroup->AddInstance(Instance);
+	Renderer->RenderGroups.AddItem(RGroup);
+	Renderer->RenderGroups[Renderer->RenderGroups.Num()-1] = RGroup;
+}
+
+Define_Command(UpdateParticleSystem, Renderer)
+{
+	assert(Renderer->ParticleSystems.Num() > Slot);
+	assert(Renderer->ParticleSystems[Slot]);
+	Renderer->ParticleSystems[Slot]->UpdateParticles(Locations, NumParticles);
+}
+
 Define_Command(CameraProjection, Renderer)
 {
 	Renderer->Projection = Matrix4::perspective(HFOV, AspectRatio, NearClip, FarClip);
+}
+
+Define_Command(CameraProjectionTransform, Renderer)
+{
+	Renderer->Projection = Transform;
 }
 
 Define_Command(ViewTransform, Renderer)

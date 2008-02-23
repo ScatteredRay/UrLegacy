@@ -7,6 +7,8 @@ typedef signed short int int16;
 typedef unsigned short int uint16;
 //typedef signed int int;
 typedef unsigned int uint;
+typedef signed int int32;
+typedef unsigned int uint32;
 typedef signed __int64 int64;
 typedef unsigned __int64 uint64;
 typedef size_t psize;

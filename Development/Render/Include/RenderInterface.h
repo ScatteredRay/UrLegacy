@@ -208,7 +208,7 @@ void RIPresent(HRenderDevice Dev);
 void RIClear(HRenderDevice Dev, uint ClearFlags, KColor& Clear = KColor(0, 0, 0, 0), float Depth = 1.0f, int Stencil = 0, KColor& Accum = KColor(0, 0, 0, 0));
 HVertexBuffer RICreateVertexBuffer(HRenderDevice Dev, size_t Size);
 void RISetBufferData(HRenderDevice Dev, HVertexBuffer VBO, void* Data, size_t Size);
-void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO);
+void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO, uint StreamNumber);
 void RIDrawPrimitive(HRenderDevice Dev, uint DrawType, uint StartVertex, uint PrimitiveCount);
 void RIDeleteVertexBuffer(HRenderDevice Dev, HVertexBuffer VBO);
 void RISetColor(HRenderDevice Dev, KColor& Color);

@@ -6,6 +6,7 @@
 
 class UrRenderGroup;
 class UrModel;
+class UrParticleSystemModel;
 
 // Keep out of view of non render code.
 class UrRenderer
@@ -19,6 +20,7 @@ public:
 	Matrix4 View;
 	Matrix4 Projection;
 	KArray<UrRenderGroup*> RenderGroups;
+	KArray<UrParticleSystemModel*> ParticleSystems;
 public:
 	UrRenderer(HWindowContext Win) : WindowContext(Win), GameSync(0), RenderGroups()
 	{}

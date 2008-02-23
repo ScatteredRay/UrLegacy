@@ -65,7 +65,7 @@ void RISetBufferData(HRenderDevice Dev, HVertexBuffer VBO, void* Data, size_t Si
 	glBufferData(GL_ARRAY_BUFFER, Size, Data, GL_STATIC_DRAW);
 }
 
-void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO)
+void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO, uint32 StreamNumber)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO.BufferID);
 	glVertexPointer(3, GL_FLOAT, 3*4, NULL);

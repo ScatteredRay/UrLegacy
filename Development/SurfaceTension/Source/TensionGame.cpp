@@ -3,7 +3,7 @@
 #include "RenderInterface.h"
 #include "UThreading.h"
 #include "UrRender.h"
-#include "UInput.h"
+#include "Particles.h"
 
 #define MAX_LOADSTRING 100
 
@@ -88,7 +88,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		return FALSE;
 	}
 
-	TGame* TheGame = new TGame();
+	//TGame* TheGame = new TGame();
 	
 	HDC hDC = GetDC(hWnd);
 
@@ -112,19 +112,12 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	GThreadManager->CreateThread(RenderThread, Thread_Rendering);
 	UrRenderer* Renderer = RenderThread->GetRenderer();
 
-	OldXPos = 0;
-	OldYPos = 0;
-
-	CameraYaw = 0.0f;
-	CameraPitch = 0.0f;
-	CameraDist = 2.0f;
+	FluidSystem* Fluids = new FluidSystem(2000);
 
 	bool bContinue = true;
 
-	RCClearColor(Renderer, KColor(75, 75, 75, 255));
-	//RenderCommand(Renderer, new UrCreateGridCommand(KColor(0, 0, 255, 255), 10, 0.5f));
-	RCCreateGrid(Renderer, KColor(0, 0, 255, 255), 10, 0.5f);
-	RCCameraProjection(Renderer, 0.1f, 100.0f, UR_PI/2.0f, 1.0f);
+	RCClearColor(Renderer, KColor(255, 255, 255, 255));
+	RCCameraProjectionTransform(Renderer, Matrix4::identity());
 
 	uint64 PerformanceFrequency;
 	uint64 LastFrameTime;
@@ -156,6 +149,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 				LastFrameTime = FrameTime;
 			}
 
+			Fluids->Update(FrameDelta);
+
 			Matrix4 ViewMatrix;
 			// Converts the scene from an Y up environment into a Z up environment;
 			Matrix4 CoordMat = Matrix4(	Vector4(0.0f, 0.0f, 1.0f, 0.0f),
@@ -163,14 +158,17 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 										Vector4(0.0f, -1.0f, 0.0f, 0.0f),
 										Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 			//GLocalPlayer->GenerateViewMatrix(&ViewMatrix);
-			RCViewTransform(Renderer, CoordMat*ViewMatrix);
+			//RCViewTransform(Renderer, CoordMat*ViewMatrix);
+			RCViewTransform(Renderer, Matrix4::identity());
 
 			RenderCommand(Renderer, new UrRenderCommand(Render_Command_FrameSync));
 		}
 	}
+	
+	delete Fluids;
 	RenderCommand(Renderer, new UrRenderCommand(Render_Command_Kill));
 
-	delete TheGame;
+	//delete TheGame;
 
 #if USING_DX
 	gD3D->Release();
@@ -293,16 +291,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			int xPos = LOWORD(lParam);
 			int yPos = HIWORD(lParam);
 
-			if(bInitInput)
-			{
-				GInput->SetAxisInput(Name("PlayerYaw"), (xPos - OldXPos)/256.0f);
-				GInput->SetAxisInput(Name("PlayerPitch"), (yPos - OldYPos)/256.0f);
-			}
-			else
-				bInitInput = true;
+			//if(bInitInput)
+			//{
+				//GInput->SetAxisInput(Name("PlayerYaw"), (xPos - OldXPos)/256.0f);
+				//GInput->SetAxisInput(Name("PlayerPitch"), (yPos - OldYPos)/256.0f);
+			//}
+			//else
+			//	bInitInput = true;
 
-			OldXPos = xPos;
-			OldYPos = yPos;
+			//OldXPos = xPos;
+			//OldYPos = yPos;
 		}
 		break;
 	case WM_KEYDOWN:
@@ -311,80 +309,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case VK_ESCAPE:
 			PostQuitMessage(0);
 			break;
-		case 'e':
-		case 'E':
-			aUp = 1.0f;
-			break;
-		case 'd':
-		case 'D':
-			aDown = 1.0f;
-			break;
-		case 's':
-		case 'S':
-			aLeft = 1.0f;
-			break;
-		case 'f':
-		case 'F':
-			aRight = 1.0f;
-			break;
-		case 'w':
-		case 'W':
-			aRollLeft = 1.0f;
-			break;
-		case 'r':
-		case 'R':
-			aRollRight = 1.0f;
-			break;
-		case 'a':
-		case 'A':
-			aForward = 1.0f;
-			break;
-		case 'z':
-		case 'Z':
-			aBackwards = 1.0f;
 		}
-		goto AccumulateAxis;
-	case WM_KEYUP:
-		switch(wParam)
-		{
-		case 'e':
-		case 'E':
-			aUp = 0.0f;
-			break;
-		case 'd':
-		case 'D':
-			aDown = 0.0f;
-			break;
-		case 's':
-		case 'S':
-			aLeft = 0.0f;
-			break;
-		case 'f':
-		case 'F':
-			aRight = 0.0f;
-			break;
-		case 'w':
-		case 'W':
-			aRollLeft = 0.0f;
-			break;
-		case 'r':
-		case 'R':
-			aRollRight = 0.0f;
-			break;
-		case 'a':
-		case 'A':
-			aForward = 0.0f;
-			break;
-		case 'z':
-		case 'Z':
-			aBackwards = 0.0f;
-		}
-		goto AccumulateAxis;
-	AccumulateAxis:
-		GInput->SetAxisInput(Name("PlayerRoll"), (aRollLeft - aRollRight)*0.05f);
-		GInput->SetAxisInput(Name("PlayerThrottle"), aForward - aBackwards);
-		GInput->SetAxisInput(Name("PlayerSlide"), aRight - aLeft);
-		GInput->SetAxisInput(Name("PlayerRise"), aUp - aDown);
 	case WM_PAINT:
 		//hdc = BeginPaint(hWnd, &ps);
 		// TODO: Add any drawing code here...

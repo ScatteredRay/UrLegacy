@@ -87,9 +87,9 @@ void RISetBufferData(HRenderDevice Dev, HVertexBuffer VBO, void* Data, size_t Si
 	VBO.VBO->Unlock();
 }
 
-void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO)
+void RIBindBuffer(HRenderDevice Dev, HVertexBuffer VBO, uint32 StreamNumber)
 {
-	Dev.Device->SetStreamSource(0, VBO.VBO, 0, 3*4);
+	Dev.Device->SetStreamSource(StreamNumber, VBO.VBO, 0, 3*4);
 }
 
 void RIDrawPrimitive(HRenderDevice Dev, uint DrawType, uint StartVertex, uint PrimitiveCount)
